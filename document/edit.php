@@ -1,11 +1,11 @@
-<?php 
+<?php
 session_start();
 include '../koneksi.php';
 
 $id = $_GET['id'];
 
-// Query pertama untuk tabel registrasi
-$sql1 = "SELECT * FROM registrasi WHERE id = $id";
+// Query pertama untuk tabel document
+$sql1 = "SELECT * FROM document WHERE id = $id";
 $result1 = mysqli_query($koneksi, $sql1);
 
 if (!$result1) {
@@ -18,7 +18,7 @@ $client_id = $d['client_id'];
 
 // Debugging: dastikan client_id ditemukan
 if (!$client_id) {
-    die('client_id tidak ditemukan di tabel registrasi');
+    die('client_id tidak ditemukan di tabel document');
 }
 
 // Query kedua untuk tabel client berdasarkan client_id
@@ -36,8 +36,8 @@ if (!$client) {
     die('Data client tidak ditemukan');
 }
 
-    
- ?>
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -91,43 +91,36 @@ if (!$client) {
 </head>
 
 <body>
-    <?php 
-    if (!isset($_SESSION['username'])) {
-        header("location: ../index.php");
-    }else {
-        $username = $_SESSION['username'];  
-    }
 
- ?>
     <form action="proedit.php" method="post">
         <div class="form-group">
-            <input type="hidden" class="form-control" name="id" autocomplete="off" value="<?php echo $d['id'];?>">
+            <input type="hidden" class="form-control" name="id" autocomplete="off" value="<?php echo $d['id']; ?>">
 
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">client</label>
             <select class="form-control" name="client_id" required>
-                <?php 
-            include '../koneksi.php';
-            $sql = "SELECT id, name FROM client";
-            $result = mysqli_query($koneksi, $sql);
-            while ($data = mysqli_fetch_array($result)) {
-                echo "<option value=\"{$data['id']}\">{$data['name']}</option>";
-            }
-            ?>
+                <?php
+                include '../koneksi.php';
+                $sql = "SELECT id, name FROM client";
+                $result = mysqli_query($koneksi, $sql);
+                while ($data = mysqli_fetch_array($result)) {
+                    echo "<option value=\"{$data['id']}\">{$data['name']}</option>";
+                }
+                ?>
             </select>
         </div>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">periode </label>
             <input type="text" class="form-control" name="Periode" autocomplete="off"
-                value="<?php echo $d['periode'];?>">
+                value="<?php echo $d['periode']; ?>">
 
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">customer address</label>
             <input type="text" class="form-control" name="tanggal" autocomplete="off"
-                value="<?php echo $d['tanggal'];?>">
+                value="<?php echo $d['tanggal']; ?>">
 
         </div>
 
