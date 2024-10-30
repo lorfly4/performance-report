@@ -72,7 +72,7 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 if (isset($_POST['kesimpulan'])) {
     $kesimpulan = $_POST['kesimpulan'];
-    $query = "INSERT INTO kesimpulan (kesimpulan, id_kesimpulan) VALUES ('$kesimpulan', '$id')";
+    $query = "INSERT INTO kesimpulan (id, kesimpulan) VALUES ('$id', '$kesimpulan')";
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {

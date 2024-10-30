@@ -73,7 +73,7 @@ $id = $_GET['id'];
 
 if (isset($_POST['analisa_top'])) {
     $analisa_top = $_POST['analisa_top'];
-    $query = "INSERT INTO analisa_top_wilayah (top, id_top) VALUES ('$analisa_top', '$id')";
+    $query = "INSERT INTO analisa_top_wilayah (id, top) VALUES ('$id', '$analisa_top')";
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {

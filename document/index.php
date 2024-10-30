@@ -28,16 +28,13 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="">Dashboard</a>
+                            <a class="nav-link active" aria-current="page" href="../dashboard.php">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="../client/client.php">Client</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="">Registrasi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -69,14 +66,14 @@
                                         <td>
 
                                             <select class="form-control" name="client_id" required>
-                                                <?php 
-            include '../koneksi.php';
-            $sql = "SELECT id, name FROM client";
-            $result = mysqli_query($koneksi, $sql);
-            while ($data = mysqli_fetch_array($result)) {
-                echo "<option value=\"{$data['id']}\">{$data['name']}</option>";
-            }
-            ?>
+                                                <?php
+                                                include '../koneksi.php';
+                                                $sql = "SELECT id, name FROM client";
+                                                $result = mysqli_query($koneksi, $sql);
+                                                while ($data = mysqli_fetch_array($result)) {
+                                                    echo "<option value=\"{$data['id']}\">{$data['name']}</option>";
+                                                }
+                                                ?>
                                             </select>
 
                                         </td>
@@ -126,38 +123,42 @@
 
                     </tr>
                 </thead>
-                <?php 
-                                        
+                <?php
 
-                                        $no = 1;
-                                      
-                                            
-                                        
-                                     ?>
+
+                $no = 1;
+
+
+
+                ?>
                 <tbody>
 
-                    <?php 
-                                       $no++;
-                                         include 'paging.php';
+                    <?php
+                    $no++;
+                    include 'paging.php';
 
-                                        ?>
+                    ?>
                 </tbody>
             </table>
 
         </div>
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" <?php if($halaman > 1){ echo "href='?halaman=$Previous'"; } ?>>Previous</a>
+                <a class="page-link" <?php if ($halaman > 1) {
+                                            echo "href='?halaman=$Previous'";
+                                        } ?>>Previous</a>
             </li>
-            <?php 
-                for($x=1;$x<=$total_halaman;$x++){
-                    ?>
+            <?php
+            for ($x = 1; $x <= $total_halaman; $x++) {
+            ?>
             <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
             <?php
-                }
-                ?>
+            }
+            ?>
             <li class="page-item">
-                <a class="page-link" <?php if($halaman < $total_halaman) { echo "href='?halaman=$next'"; } ?>>Next</a>
+                <a class="page-link" <?php if ($halaman < $total_halaman) {
+                                            echo "href='?halaman=$next'";
+                                        } ?>>Next</a>
             </li>
         </ul>
     </main>

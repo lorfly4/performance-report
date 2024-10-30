@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <?php
     include '../koneksi.php';
 
@@ -61,7 +62,7 @@
                                 class="text-white text-decoration-none">Edit</a>
                         </button>
                         <button type="button" class="btn btn-primary">
-                            <a href="../print.php?id=<?php echo htmlspecialchars($d['id']); ?>"
+                            <a href="../print.php?id=<?php echo htmlspecialchars($d['id']); ?>" target="_blank"
                                 class="text-white text-decoration-none">Print</a>
                         </button>
                         <div class="btn-group">

@@ -395,7 +395,7 @@ if (!$result) {
     </ul>
     <?php
     $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-    $sql = "SELECT * FROM analisa_top_wilayah WHERE id_top = '$id'";
+    $sql = "SELECT * FROM analisa_top_wilayah WHERE id = '$id'";
     $top = mysqli_query($koneksi, $sql);
 
     if (mysqli_num_rows($top) > 0) {
@@ -1222,7 +1222,7 @@ LIMIT 1";
 
                 <?php
                 $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-                $sql = "SELECT * FROM analisa_tat WHERE id_tat = '$id'";
+                $sql = "SELECT * FROM analisa_tat WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -1360,7 +1360,7 @@ LIMIT 1";
                 // Menampilkan bagian kedua
                 // Query untuk mendapatkan total nasabah dan polis
                 $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-                $sql = "SELECT * FROM analisa_hasil_investigasi WHERE id_hasil_investigasi = '$id'";
+                $sql = "SELECT * FROM analisa_hasil_investigasi WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -1518,7 +1518,7 @@ LIMIT 1";
             <p><strong>Analisa:</strong></p>
             <?php
             $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-            $sql = "SELECT * FROM analisa_sebaran_wilayah_hasil_investigasi WHERE id_analisa = '$id'";
+            $sql = "SELECT * FROM analisa_sebaran_wilayah_hasil_investigasi WHERE id = '$id'";
             $result = mysqli_query($koneksi, $sql);
 
             if (mysqli_num_rows($result) > 0) {
@@ -1845,7 +1845,7 @@ LIMIT 1";
                 </ol>
                 <?php
                 $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-                $sql = "SELECT * FROM kesimpulan WHERE id_kesimpulan = '$id'";
+                $sql = "SELECT * FROM kesimpulan WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -1871,7 +1871,7 @@ LIMIT 1";
                         sampaikan rekomendasi yang dapat diambil lebih lanjut:</strong></p>
                 <?php
                 $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-                $sql = "SELECT * FROM rekomendasi WHERE id_rekomendasi = '$id'";
+                $sql = "SELECT * FROM rekomendasi WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (mysqli_num_rows($result) > 0) {

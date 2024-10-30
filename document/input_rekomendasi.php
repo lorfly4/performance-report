@@ -72,7 +72,7 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 if (isset($_POST['rekomendasi'])) {
     $rekomendasi = $_POST['rekomendasi'];
-    $query = "INSERT INTO rekomendasi (rekomendasi, id_rekomendasi) VALUES ('$rekomendasi', '$id')";
+    $query = "INSERT INTO rekomendasi (id, rekomendasi) VALUES ('$id','$rekomendasi')";
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {
