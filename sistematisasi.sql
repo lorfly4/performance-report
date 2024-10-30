@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 29, 2024 at 10:13 AM
+-- Generation Time: Oct 30, 2024 at 08:14 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.11
 
@@ -114,13 +114,13 @@ INSERT INTO `allianz` (`id`, `No`, `Client Name`, `DateYear`, `Date Month`, `Nom
 (39, '1230', 'Allianz', '2024', 'March', '000067418206	', 'Faonasekhi', 'Indragiri Hilir', '', 'Riau', '', 'DC', '', 'Erik Putra', '', '3/20/2024', '3/20/2024', '3/26/2024', '4/2/2024', '20', '2500000000', '', '11/5/1976', 'Done', '100%', '4/8/2024', '', 'PEC', '', 'Hipertensi', 'Dzikrina', '', '', 'Over 14 Days', 'Temuan', 'Done', '1404060511760002', ''),
 (40, '1235', 'Allianz', '2024', 'April', '000059418305', 'Edy Harianto', 'Bandung', '', 'Jawa Barat', '', 'CI', '', 'Billy Jefry Joly', '', '4/17/2024', '4/17/2024', '4/23/2024', '4/30/2024', '22', '1000000000', '', '3/29/1980', 'Done', '100%', '5/8/2024', '', 'PEC', '', 'Stemi Anterolateral, Lama karena LN ', 'Sarah', '', '', 'Over 14 Days', 'Temuan', '', '3273072903800002', ''),
 (41, '1239', 'Allianz', '2024', 'April', '000071225280', 'Avan Isabella Taslim', 'Tangerang Selatan', '', 'Banten', '', 'CI', '', 'Ifran Dwi Indra Sw', '', '4/17/2024', '4/17/2024', '4/23/2024', '4/30/2024', '29', '0', '', '5/10/1987', 'Done', '100%', '5/15/2024', '', 'Re Underwriting', '', 'Menunggu Luar Negeri, Terdapat PEC yang bersifat non material dengan diagnosa Cytitis Hemoragis dan Atypical glandular cells of undetermined significant (AGUS)', 'Fadlan', '', '', 'Over 14 Days', '', '', '3273115005870001', ''),
-(42, '1371', 'Allianz', '2024', 'May', '000071640692', 'HERNI VERYANY W', 'Jakarta Selatan', 'Medan', 'DKI Jakarta', 'Sumatera Utara', 'CI', '', 'Dhirada Bayu Bagaswara', 'Andi Eko Pratama Samosir', '5/27/2024', '5/28/2024', '6/3/2024', '6/10/2024', '32', '1500000000', '', '2/22/1990', 'Done', '100%', '6/28/2024', '', 'PEC', '', 'Bulging diskus intervertebralis L4-5 dan ditambah dengan ditemukan beberapa riwayat sebelum polis diterbitkan, namun tidak disampaikan kepada Asuransi pada saat pengisian SPAJ sehingga dalam hal ini Nasabah tidak ada itikad baik (utmost good faith) dalam penyampaian informasi mengenai riwayat penyakit sebelumnya. Menunggu APS dari RSPI Puri Indah & RS Siloam Medan', 'Dhea', '', '', '', '', '', '1871016202900007', 'Done'),
-(43, '1372', 'Allianz', '2024', 'May', '000070991290', 'DR. MUHAMAD ZAINI', 'Jakarta Selatan', '', 'DKI Jakarta', '', 'HS', '', 'Dhirada Bayu Bagaswara', '', '5/27/2024', '5/28/2024', '6/3/2024', '6/10/2024', '37', '', '1000000000', '10/3/1953', 'Done', '100%', '7/3/2024', '', 'PEC', '', 'CVT kiri (Cerebral Venous Trombosis) + BPH Post Embolisasi. Menunggu hasil konfirmasi dari Mount Elizabeth Novena Singapura (rumah sakit terdata)', 'Rima', '', '', '', '', '', '3173080310530003', 'Done'),
-(44, '1625', 'Allianz', '2024', 'June', '000070200039', 'ERIN YOLANDA', 'Bogor', '', 'Jawa Barat', '', 'CI', '', 'Dedi Rochmansyah', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '25', '1250000000', '', '8/22/1982', 'Done', '100%', '7/22/2024', '', 'No Finding', '', '', 'Dhea', '', '', '', '', 'Done', '3271016208820011', 'Done'),
-(45, '1626', 'Allianz', '2024', 'June', '000070199970', 'ERIN YOLANDA', 'Bogor', '', 'Jawa Barat', '', 'CI', '', 'Dedi Rochmansyah', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '25', '20000000', '', '8/22/1982', 'Done', '100%', '7/22/2024', '', 'No Finding', '', '', 'Dhea', '', '', '', '', 'Done', '3271016208820011', 'Done'),
-(46, '1627', 'Allianz', '2024', 'June', '000074111450', 'JUSTIN KENNEDY RYONALDO', 'Tangerang', '', 'Jawa Barat', '', 'DC', '', 'Ifran Dwi Indra Sw', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '14', '1000000000', '', '1/14/2009', 'Done', '100%', '7/11/2024', '', 'Re Underwriting', '', 'Hipersekresi Bronkus, Hipertrofi Tonsil dan Granuloma Piogenik', 'Fadlan', '', '', '', '', '', '3602ALU20090250', 'Done'),
-(47, '1636', 'Allianz', '2024', 'July', '000069432639', 'Jesslyn Miranda', 'Jakarta Selatan', '', 'DKI Jakarta', '', 'CI', '', 'Billy Jefry Joly', '', '7/18/2024', '7/18/2024', '7/24/2024', '7/31/2024', '42', '1000000000', '', '6/30/1995', 'Done', '100%', '8/28/2024', '', 'No Finding', '', 'Menunggu hasil APS dari faskes terkait & hasil pengecekan pada LN', 'Rima', '', '', '', '', 'Done', '3174017006950001', 'Done'),
-(48, '1696', 'Allianz', '2024', 'September', '000073858672', 'Randy Cahyana', 'Jakarta Barat', '', 'DKI Jakarta', '', 'DC', '', 'Dhirada Bayu Bagaswara', '', '9/12/2024', '9/13/2024', '9/19/2024', '9/26/2024', '25', '1000000000', '', '27/11/1991', 'Done', '100%', '10/7/2024', '', 'No Finding', '', '', 'Bondan', '', '', '', '', '', '3204102711910004', 'Done');
+(42, '1371', 'Allianz', '2024', 'May', '000071640692', 'HERNI VERYANY W', 'Jakarta Selatan', 'Medan', 'DKI Jakarta', 'Sumatera Utara', 'CI', '', 'Dhirada Bayu Bagaswara', 'Andi Eko Pratama Samosir', '5/27/2024', '5/28/2024', '6/3/2024', '6/10/2024', '32', '1500000000', '', '2/22/1990', 'Done', '100%', '6/28/2024', '', 'PEC', '', 'Bulging diskus intervertebralis L4-5 dan ditambah dengan ditemukan beberapa riwayat sebelum polis diterbitkan, namun tidak disampaikan kepada Asuransi pada saat pengisian SPAJ sehingga dalam hal ini Nasabah tidak ada itikad baik (utmost good faith) dalam penyampaian informasi mengenai riwayat penyakit sebelumnya. Menunggu APS dari RSPI Puri Indah & RS Siloam Medan', 'Dhea', '', '', 'Under 14 Days', '', '', '1871016202900007', 'Done'),
+(43, '1372', 'Allianz', '2024', 'May', '000070991290', 'DR. MUHAMAD ZAINI', 'Jakarta Selatan', '', 'DKI Jakarta', '', 'HS', '', 'Dhirada Bayu Bagaswara', '', '5/27/2024', '5/28/2024', '6/3/2024', '6/10/2024', '37', '', '1000000000', '10/3/1953', 'Done', '100%', '7/3/2024', '', 'PEC', '', 'CVT kiri (Cerebral Venous Trombosis) + BPH Post Embolisasi. Menunggu hasil konfirmasi dari Mount Elizabeth Novena Singapura (rumah sakit terdata)', 'Rima', '', '', 'Under 14 Days', '', '', '3173080310530003', 'Done'),
+(44, '1625', 'Allianz', '2024', 'June', '000070200039', 'ERIN YOLANDA', 'Bogor', '', 'Jawa Barat', '', 'CI', '', 'Dedi Rochmansyah', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '25', '1250000000', '', '8/22/1982', 'Done', '100%', '7/22/2024', '', 'No Finding', '', '', 'Dhea', '', '', 'Under 14 Days', '', 'Done', '3271016208820011', 'Done'),
+(45, '1626', 'Allianz', '2024', 'June', '000070199970', 'ERIN YOLANDA', 'Bogor', '', 'Jawa Barat', '', 'CI', '', 'Dedi Rochmansyah', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '25', '20000000', '', '8/22/1982', 'Done', '100%', '7/22/2024', '', 'No Finding', '', '', 'Dhea', '', '', 'Under 14 Days', '', 'Done', '3271016208820011', 'Done'),
+(46, '1627', 'Allianz', '2024', 'June', '000074111450', 'JUSTIN KENNEDY RYONALDO', 'Tangerang', '', 'Jawa Barat', '', 'DC', '', 'Ifran Dwi Indra Sw', '', '6/28/2024', '6/28/2024', '7/4/2024', '7/11/2024', '14', '1000000000', '', '1/14/2009', 'Done', '100%', '7/11/2024', '', 'Re Underwriting', '', 'Hipersekresi Bronkus, Hipertrofi Tonsil dan Granuloma Piogenik', 'Fadlan', '', '', 'Under 14 Days', '', '', '3602ALU20090250', 'Done'),
+(47, '1636', 'Allianz', '2024', 'July', '000069432639', 'Jesslyn Miranda', 'Jakarta Selatan', '', 'DKI Jakarta', '', 'CI', '', 'Billy Jefry Joly', '', '7/18/2024', '7/18/2024', '7/24/2024', '7/31/2024', '42', '1000000000', '', '6/30/1995', 'Done', '100%', '8/28/2024', '', 'No Finding', '', 'Menunggu hasil APS dari faskes terkait & hasil pengecekan pada LN', 'Rima', '', '', 'Under 14 Days', '', 'Done', '3174017006950001', 'Done'),
+(48, '1696', 'Allianz', '2024', 'September', '000073858672', 'Randy Cahyana', 'Jakarta Barat', '', 'DKI Jakarta', '', 'DC', '', 'Dhirada Bayu Bagaswara', '', '9/12/2024', '9/13/2024', '9/19/2024', '9/26/2024', '25', '1000000000', '', '27/11/1991', 'Done', '100%', '10/7/2024', '', 'No Finding', '', '', 'Bondan', '', '', 'Under 14 Days', '', '', '3204102711910004', 'Done');
 
 -- --------------------------------------------------------
 
@@ -130,16 +130,15 @@ INSERT INTO `allianz` (`id`, `No`, `Client Name`, `DateYear`, `Date Month`, `Nom
 
 CREATE TABLE `analisa_hasil_investigasi` (
   `id` int NOT NULL,
-  `hasil_investigasi` text NOT NULL,
-  `id_hasil_investigasi` int NOT NULL
+  `hasil_investigasi` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `analisa_hasil_investigasi`
 --
 
-INSERT INTO `analisa_hasil_investigasi` (`id`, `hasil_investigasi`, `id_hasil_investigasi`) VALUES
-(1, 'Dari total 222 polis atau 186 nasabah yang telah dilakukan investigasi, terdapat 71 polis atau 56 nasabah (31.98% dari total polis) yang dapat dijadikan acuan untuk menolak klaim serta membatalkan polis.', 2);
+INSERT INTO `analisa_hasil_investigasi` (`id`, `hasil_investigasi`) VALUES
+(4, '2.	Dari total 222 polis atau 186 nasabah yang telah dilakukan investigasi, terdapat 71 polis atau 56 nasabah (31.98% dari total polis) yang dapat dijadikan acuan untuk menolak klaim serta membatalkan polis');
 
 -- --------------------------------------------------------
 
@@ -149,17 +148,15 @@ INSERT INTO `analisa_hasil_investigasi` (`id`, `hasil_investigasi`, `id_hasil_in
 
 CREATE TABLE `analisa_sebaran_wilayah_hasil_investigasi` (
   `id` int NOT NULL,
-  `analisa` text NOT NULL,
-  `id_analisa` int NOT NULL
+  `analisa` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `analisa_sebaran_wilayah_hasil_investigasi`
 --
 
-INSERT INTO `analisa_sebaran_wilayah_hasil_investigasi` (`id`, `analisa`, `id_analisa`) VALUES
-(1, 'testing 123', 2),
-(2, '1.	Hasil Investigasi klaim dengan temuan PECj\r\nBerdasarkan 63 kasus dengan temuan PEC (Pre Exiciting condition) diperoleh data sebagai berikut:\r\n-	Top 3 diagnosa penyakit yang ditemukan meliputi HT, DM dan Stroke.\r\n-	Wilayah dengan hasil temuan terbanyak adalah daerah Sumatera Utara yaitu sebanyak 22 kasus (atau 34.92% dari total 63 kasus).\r\n\r\n2.	Hasil investigasi klaim dengan temuan fraud.\r\nBerdasarkan 8 kasus Fraud diperoleh data informasi sebagai berikut:\r\n-	Ahli waris mengakui telah melakukan pemalsuan tandatangan Ketua RT pada Surat Keterangan Kematian Tertanggung.\r\n-	Berdasarkan hasil silence investigation, Tertanggung diketahui dapat melakukan komunikasi secara normal tanpa menggunakan alat bantu dengar (kasus penyakit kritis ketulian).\r\n-	Berdasarkan hasil investigasi dan pengakuan dari Ahli waris, bahwa Tertanggung sudah meninggal sebelum polis diterbitkan.\r\nUdul d\r\n-	Berdasarkan pengakuan dari Tertanggung bahwa polis dibelikan dan dibayarkan oleh atasan Tertanggung\r\n-	Bahwa Pemegang Polis sekaligus Ahli waris mengaku tidak pernah menandatangani SPAJ dan tidak mengetahui mengenai informasi polis.\r\n-	Berdasarkan pengecekan pada faskes terdata dan informasi dari Wakil Kepala Rumah Sakit, bahwa Tertanggung tidak pernah menjalani perawatan di faskes tersebut dan dokumen klaim tidak pernag dikeluarkan oleh pihak rumah sakit.\r\n\r\n3.	Hasil investigasi klaim dengan temuan Batal Polis\r\nBerdasarkan 2 kasus Fraud diperoleh data informasi sebagai berikut:\r\n-	Ahli waris mengakui bahwa terdapat ketidakbenaran dalam memberikan informasi mengenai tempat kematian Tertanggung, dimana pada saat pengajuan klaim Tertanggung \r\n-	dinyatakan meninggal di Pasaman Barat, namun dari hasil investigasi diketahui Tertanggung meninggal di Nias.\r\n-	Nasabah membatalkan polis karena merasa proses klaim di Asuransi Allianz yang lama dan meminta untuk klaim yang sudah diajukan dapat dibayarkan.\r\n\r\n4.	Hasil investigasi klaim dengan Hasil Case Closed\r\n-	Proses investigasi dihentikan (case closed) sehubungan dengan nasabah tidak berhasil ditemui dan nomor telepon tidak berhasil dihubungi\r\n-	Rumah sakit mensyaratkan  adanya Surat Kuasa asli dari Nasabah, dimana dalam hal inj sesuai dengan permintaan dari Asuransi Allianz nasabah tidak diperkenankan untuk ditemui.\r\n\r\n5.	Hasil investigasi klaim dengan Hasil No Finding\r\n-	Berdasarkan hasil investigasi ke berbagai pihak baik pada fasilitas kesehatan, institusi pemerintah serta hasil wawancara, tidak ditemukan data medis sebelum polis diterbitkan yang bersifat material. \r\n-	Dari sisi financial background telah sesuai baik informasi di dalam SPAJ dan temuan di lapangan, dalam hal ini pembayar premi memiliki kemampuan untuk membeli dan membayarkan premi.\r\n-	Tidak terdapat indikasi fraud baik dalam proses penutupan polis maupun pengajuan klaim. Tidak ada kejanggalan apapun pada saat melakukan wawancara dengan nasabah dimana semua informasi dapat dijawab dengan baik dan lancar serta dapat menunjukan bukti-bukti yang ditanyakan oleh investigator.\r\n', 2);
+INSERT INTO `analisa_sebaran_wilayah_hasil_investigasi` (`id`, `analisa`) VALUES
+(4, '2.	Hasil investigasi klaim dengan temuan fraud.\r\nBerdasarkan 8 kasus Fraud diperoleh data informasi sebagai berikut:\r\n-	Ahli waris mengakui telah melakukan pemalsuan tandatangan Ketua RT pada Surat Keterangan Kematian Tertanggung.\r\n-	Berdasarkan hasil silence investigation, Tertanggung diketahui dapat melakukan komunikasi secara normal tanpa menggunakan alat bantu dengar (kasus penyakit kritis ketulian).\r\n-	Berdasarkan hasil investigasi dan pengakuan dari Ahli waris, bahwa Tertanggung sudah meninggal sebelum polis diterbitkan.\r\nUdul d\r\n-	Berdasarkan pengakuan dari Tertanggung bahwa polis dibelikan dan dibayarkan oleh atasan Tertanggung\r\n-	Bahwa Pemegang Polis sekaligus Ahli waris mengaku tidak pernah menandatangani SPAJ dan tidak mengetahui mengenai informasi polis.\r\n-	Berdasarkan pengecekan pada faskes terdata dan informasi dari Wakil Kepala Rumah Sakit, bahwa Tertanggung tidak pernah menjalani perawatan di faskes tersebut dan dokumen klaim tidak pernag dikeluarkan oleh pihak rumah sakit.\r\n\r\n3.	Hasil investigasi klaim dengan temuan Batal Polis\r\nBerdasarkan 2 kasus Fraud diperoleh data informasi sebagai berikut:\r\n-	Ahli waris mengakui bahwa terdapat ketidakbenaran dalam memberikan informasi mengenai tempat kematian Tertanggung, dimana pada saat pengajuan klaim Tertanggung \r\n-	dinyatakan meninggal di Pasaman Barat, namun dari hasil investigasi diketahui Tertanggung meninggal di Nias.\r\n-	Nasabah membatalkan polis karena merasa proses klaim di Asuransi Allianz yang lama dan meminta untuk klaim yang sudah diajukan dapat dibayarkan.\r\n\r\n4.	Hasil investigasi klaim dengan Hasil Case Closed\r\n-	Proses investigasi dihentikan (case closed) sehubungan dengan nasabah tidak berhasil ditemui dan nomor telepon tidak berhasil dihubungi\r\n-	Rumah sakit mensyaratkan  adanya Surat Kuasa asli dari Nasabah, dimana dalam hal inj sesuai dengan permintaan dari Asuransi Allianz nasabah tidak diperkenankan untuk ditemui.\r\n\r\n5.	Hasil investigasi klaim dengan Hasil No Finding\r\n-	Berdasarkan hasil investigasi ke berbagai pihak baik pada fasilitas kesehatan, institusi pemerintah serta hasil wawancara, tidak ditemukan data medis sebelum polis diterbitkan yang bersifat material. \r\n-	Dari sisi financial background telah sesuai baik informasi di dalam SPAJ dan temuan di lapangan, dalam hal ini pembayar premi memiliki kemampuan untuk membeli dan membayarkan premi.\r\n-	Tidak terdapat indikasi fraud baik dalam proses penutupan polis maupun pengajuan klaim. Tidak ada kejanggalan apapun pada saat melakukan wawancara dengan nasabah dimana semua informasi dapat dijawab dengan baik dan lancar serta dapat menunjukan bukti-bukti yang ditanyakan oleh investigator.\r\n');
 
 -- --------------------------------------------------------
 
@@ -169,16 +166,15 @@ INSERT INTO `analisa_sebaran_wilayah_hasil_investigasi` (`id`, `analisa`, `id_an
 
 CREATE TABLE `analisa_tat` (
   `id` int NOT NULL,
-  `tat` text NOT NULL,
-  `id_tat` int NOT NULL
+  `tat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `analisa_tat`
 --
 
-INSERT INTO `analisa_tat` (`id`, `tat`, `id_tat`) VALUES
-(1, 'Adapun yang menjadi penyebab proses investigasi dapat melewati batas waktu 14 hari kalender \r\nadalah sebagai berikut:\r\n-	Perlu dilakukannya proses penelusuran pada beberapa fasilitas kesehatan di Malaysia dan \r\nSingapura yang tidak dapat ditentukan waktunya.\r\n', 2);
+INSERT INTO `analisa_tat` (`id`, `tat`) VALUES
+(4, '2.	Adapun yang menjadi penyebab proses investigasi dapat melewati batas waktu 14 hari kalender \r\nadalah sebagai berikut:\r\n-	Perlu dilakukannya proses penelusuran pada beberapa fasilitas kesehatan di Malaysia dan \r\nSingapura yang tidak dapat ditentukan waktunya.\r\n');
 
 -- --------------------------------------------------------
 
@@ -188,16 +184,15 @@ INSERT INTO `analisa_tat` (`id`, `tat`, `id_tat`) VALUES
 
 CREATE TABLE `analisa_top_wilayah` (
   `id` int NOT NULL,
-  `top` text NOT NULL,
-  `id_top` int NOT NULL
+  `top` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `analisa_top_wilayah`
 --
 
-INSERT INTO `analisa_top_wilayah` (`id`, `top`, `id_top`) VALUES
-(1, 'Dengan demikian wilayah dengan kasus investigasi terbanyak berdasarkan jumlah nasabah adalah wilayah (% dari total 48 polis) dan (% dari total 48 polis).', 2);
+INSERT INTO `analisa_top_wilayah` (`id`, `top`) VALUES
+(4, 'Top 3 wilayah dengan kasus terbanyak berdasarkan jumlah polis\r\n-	Sumatera Utara, sebanyak 56 kasus (atau 30.1% dari total 222 polis).\r\n-	DKI Jakarta, sebanyak 52 kasus (atau 28% dari total 222 polis).\r\n-	Banten, sebanyak 24 kasus (atau 12.9% dari total 222 polis).\r\nDengan demikian wilayah dengan kasus investigasi terbanyak berdasarkan jumlah nasabah adalah wilayah Sumatera Utara (30.1% dari total nasabah) dan DKI Jakarta (28% dari total nasabah).\r\ndi\r\n');
 
 -- --------------------------------------------------------
 
@@ -238,7 +233,7 @@ CREATE TABLE `document` (
 --
 
 INSERT INTO `document` (`id`, `client_id`, `periode`, `tanggal`) VALUES
-(2, 1, 'Juli - Agustus - September', '14 Agustus 2024');
+(4, 1, 'Januari - Febuari - Maret', '30 Oktober 2024');
 
 -- --------------------------------------------------------
 
@@ -295,17 +290,15 @@ CREATE TABLE `generali` (
 
 CREATE TABLE `kesimpulan` (
   `id` int NOT NULL,
-  `kesimpulan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `id_kesimpulan` int NOT NULL
+  `kesimpulan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `kesimpulan`
 --
 
-INSERT INTO `kesimpulan` (`id`, `kesimpulan`, `id_kesimpulan`) VALUES
-(1, 'dan ini adalah kesimpulan terakhir dari performance report wkwkwk', 2),
-(2, '1.	Wilayah dengan kasus investigasi terbanyak adalah wilayah Sumatera Utara yaitu sebanyak 92 polis (atau 41.4% dari total polis).  Bahasa baku, untuk wilayah dan data disesuaikan berdasarkan policy level, persentase diambil dari total kasus wilayah tersebut per total polis keseluruhan\r\n\r\n2.	Berdasarkan temuan investigasi, untuk temuan Pre-Existing Condition (PEC) merupakan kasus dengan temuan terbanyak yaitu sebanyak 63 kasus (atau 31% dari total kasus).  free teks\r\n\r\n3.	Terdapat 78 temuan yang dapat dijadikan sebagai dasar penolakan klaim. Dengan demikian sukses rate atas klaim untuk proses investigasi adalah sebesar 35.13%.  free teks\r\n\r\n4.	Rata-rata turnaround time (TAT) penyelesain kasus adalah 14 hari kalender (Normal Case) dan 30 hari kalender untuk Non-Normal Case.  free teks\r\n\r\n5.	Bahwa uang pertanggungan yang dapat diselamatkan atas ke 222 kasus yang dilakukan investigasi periode tahun 2023 adalah sebesar Rp 42,878,603,345 (atau 43% dari total kasus yang dilakukan investigasi).  free teks\r\n', 2);
+INSERT INTO `kesimpulan` (`id`, `kesimpulan`) VALUES
+(4, '1.	Bahwa perlu adanya perhatian khusus terhadap pengajuan klaim atas polis-polis yang ditutup di wilayah dengan jumlah temuan investigasi terbanyak, dan apabila diperlukan penelusuran lebih lanjut atas pengajuan klaim tersebut.\r\n\r\n2.	Bahwa temuan-temuan dalam proses Investigasi ini baik adanya bagi area underwriting dalam melakukan mitigasi fraud kedepan, sehingga ada penguatan dalam proses seleksi resiko.\r\n\r\n3.	Perlu adanya strategi baru yang perlu diimplementasikan oleh Asuransi Allianz untuk bisa mengantisipasi adanya fraud yang sama untuk kedepannya, seperti proses KYC (Knowing Your Customer) terhadap polis-polis yang masih inforce yang dicurigai terdapat indikasi fraud dengan parameter area penutupan polis, uang pertanggungan, agen penutup yang terindikasi nakal.\r\n\r\n4.	Bahwa point 2 & 3 diatas merupakan strategy mitigasi resiko yang bersifat anticipative dan preventive yang nanti akan ditambah dengan strategy yang bersifat corrective Ketika claim terjadi dan dilakukan investigasi secara massive, dengan demikian strategy mitigasi risk akan lengkap.\r\n\r\n5.	Bahwa Asuransi Allianz harus melakukan pendalaman terhadap agen atas polis-polis dengan temuan klaim, dimana ada indikasi kuat telah mengetahui bahwa Tertanggung menderita sakit sebelumnya namun diindahkan sehingga polis bisa terbit atau bekerjasama untuk melakukan fraud. Hal ini penting untuk memberikan efek jera serta pesan kuat bagi agen lain yang akan mencoba untuk melakukan hal yang sama.\r\n\r\n6.	Rekomendasi point 1-5 diatas jika dijalankan akan mampu semakin memperkuat Kesehatan Keuangan Asuransi Allianz serta perusahaan tidak dipandang mudah untuk dilakukan abuse dalam pengajuan klaimnya.\r\n\r\n7.	Apa yang kami sampaikan di atas pada dasarnya adalah sebuah rekomendasi keputusan secara umum berdasarkan common practice, insurance perspective dan juga field finding, namun demikian hal tersebut kami kembalikan kepada Perusahaan Asuransi menyangkut keputusan akhir berdasarkan ketentuan Polis yang dimiliki serta pertimbangan lainnya.\r\n');
 
 -- --------------------------------------------------------
 
@@ -362,17 +355,37 @@ CREATE TABLE `msig` (
 
 CREATE TABLE `rekomendasi` (
   `id` int NOT NULL,
-  `rekomendasi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `id_rekomendasi` int NOT NULL
+  `rekomendasi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `rekomendasi`
 --
 
-INSERT INTO `rekomendasi` (`id`, `rekomendasi`, `id_rekomendasi`) VALUES
-(2, '1.	Bahwa perlu adanya perhatian khusus terhadap pengajuan klaim atas polis-polis yang ditutup di wilayah dengan jumlah temuan investigasi terbanyak, dan apabila diperlukan penelusuran lebih lanjut atas pengajuan klaim tersebut.', 2),
-(3, '2.	Bahwa temuan-temuan dalam proses Investigasi ini baik adanya bagi area underwriting dalam melakukan mitigasi fraud kedepan, sehingga ada penguatan dalam proses seleksi resiko.', 2);
+INSERT INTO `rekomendasi` (`id`, `rekomendasi`) VALUES
+(4, '1.	Bahwa perlu adanya perhatian khusus terhadap pengajuan klaim atas polis-polis yang ditutup di wilayah dengan jumlah temuan investigasi terbanyak, dan apabila diperlukan penelusuran lebih lanjut atas pengajuan klaim tersebut.\r\n\r\n2.	Bahwa temuan-temuan dalam proses Investigasi ini baik adanya bagi area underwriting dalam melakukan mitigasi fraud kedepan, sehingga ada penguatan dalam proses seleksi resiko.\r\n\r\n3.	Perlu adanya strategi baru yang perlu diimplementasikan oleh Asuransi Allianz untuk bisa mengantisipasi adanya fraud yang sama untuk kedepannya, seperti proses KYC (Knowing Your Customer) terhadap polis-polis yang masih inforce yang dicurigai terdapat indikasi fraud dengan parameter area penutupan polis, uang pertanggungan, agen penutup yang terindikasi nakal.\r\n\r\n4.	Bahwa point 2 & 3 diatas merupakan strategy mitigasi resiko yang bersifat anticipative dan preventive yang nanti akan ditambah dengan strategy yang bersifat corrective Ketika claim terjadi dan dilakukan investigasi secara massive, dengan demikian strategy mitigasi risk akan lengkap.\r\n\r\n5.	Bahwa Asuransi Allianz harus melakukan pendalaman terhadap agen atas polis-polis dengan temuan klaim, dimana ada indikasi kuat telah mengetahui bahwa Tertanggung menderita sakit sebelumnya namun diindahkan sehingga polis bisa terbit atau bekerjasama untuk melakukan fraud. Hal ini penting untuk memberikan efek jera serta pesan kuat bagi agen lain yang akan mencoba untuk melakukan hal yang sama.\r\n\r\n6.	Rekomendasi point 1-5 diatas jika dijalankan akan mampu semakin memperkuat Kesehatan Keuangan Asuransi Allianz serta perusahaan tidak dipandang mudah untuk dilakukan abuse dalam pengajuan klaimnya.\r\n\r\n7.	Apa yang kami sampaikan di atas pada dasarnya adalah sebuah rekomendasi keputusan secara umum berdasarkan common practice, insurance perspective dan juga field finding, namun demikian hal tersebut kami kembalikan kepada Perusahaan Asuransi menyangkut keputusan akhir berdasarkan ketentuan Polis yang dimiliki serta pertimbangan lainnya.\r\n');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int NOT NULL,
+  `nama` varchar(50) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `nama`, `username`, `password`, `role`) VALUES
+(1, 'admin', 'dim', '563728df0fdd90631ac1e51258e2857d', 'admin'),
+(2, 'Raihan Addo', 'addo', 'cb7526a2025073d628317061a9d6a9dd', 'user');
 
 --
 -- Indexes for dumped tables
@@ -389,28 +402,28 @@ ALTER TABLE `allianz`
 --
 ALTER TABLE `analisa_hasil_investigasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_hasil_invesitgasi` (`id_hasil_investigasi`);
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `analisa_sebaran_wilayah_hasil_investigasi`
 --
 ALTER TABLE `analisa_sebaran_wilayah_hasil_investigasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_analisa` (`id_analisa`);
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `analisa_tat`
 --
 ALTER TABLE `analisa_tat`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_tat` (`id_tat`);
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `analisa_top_wilayah`
 --
 ALTER TABLE `analisa_top_wilayah`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_top` (`id_top`);
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `client`
@@ -430,15 +443,20 @@ ALTER TABLE `document`
 --
 ALTER TABLE `kesimpulan`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_kesimpulan` (`id_kesimpulan`);
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `rekomendasi`
 --
 ALTER TABLE `rekomendasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_rekomendasi` (`id_rekomendasi`),
-  ADD KEY `id_rekomendasi_2` (`id_rekomendasi`);
+  ADD KEY `id` (`id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -454,25 +472,25 @@ ALTER TABLE `allianz`
 -- AUTO_INCREMENT for table `analisa_hasil_investigasi`
 --
 ALTER TABLE `analisa_hasil_investigasi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `analisa_sebaran_wilayah_hasil_investigasi`
 --
 ALTER TABLE `analisa_sebaran_wilayah_hasil_investigasi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `analisa_tat`
 --
 ALTER TABLE `analisa_tat`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `analisa_top_wilayah`
 --
 ALTER TABLE `analisa_top_wilayah`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `client`
@@ -484,35 +502,17 @@ ALTER TABLE `client`
 -- AUTO_INCREMENT for table `document`
 --
 ALTER TABLE `document`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `kesimpulan`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `kesimpulan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `rekomendasi`
---
-ALTER TABLE `rekomendasi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `user`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `analisa_hasil_investigasi`
---
-ALTER TABLE `analisa_hasil_investigasi`
-  ADD CONSTRAINT `hasil_investigasi` FOREIGN KEY (`id_hasil_investigasi`) REFERENCES `document` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Constraints for table `analisa_sebaran_wilayah_hasil_investigasi`
---
-ALTER TABLE `analisa_sebaran_wilayah_hasil_investigasi`
-  ADD CONSTRAINT `analisis` FOREIGN KEY (`id_analisa`) REFERENCES `document` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `document`
@@ -521,16 +521,10 @@ ALTER TABLE `document`
   ADD CONSTRAINT `document_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `kesimpulan`
---
-ALTER TABLE `kesimpulan`
-  ADD CONSTRAINT `kesimpulan` FOREIGN KEY (`id_kesimpulan`) REFERENCES `document` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
 -- Constraints for table `rekomendasi`
 --
 ALTER TABLE `rekomendasi`
-  ADD CONSTRAINT `rekomendasi` FOREIGN KEY (`id_rekomendasi`) REFERENCES `document` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `rekomendasi` FOREIGN KEY (`id`) REFERENCES `document` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

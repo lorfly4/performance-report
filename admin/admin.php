@@ -68,7 +68,74 @@ if ($_SESSION['role'] != 'admin') {
         </div>
     </nav>
 
+    <?php
+    require_once("../koneksi.php");
 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $username = $_SESSION['username'] ?? null;
+    $role = $_SESSION['role'] ?? null;
+
+    if ($username) {
+        // Fetch additional user data from the database if needed
+        $query = "SELECT username, role FROM user WHERE username='$username'";
+        $result = mysqli_query($koneksi, $query);
+
+        if ($data = mysqli_fetch_assoc($result)) {
+            $username = $data['username'];
+            $role = $data['role'];
+        }
+    }
+    ?>
+
+    <div class="welcome-message">
+        <p id="typed-text">
+            Hi, <?php echo $username; ?> Selamat Datang Di Halaman Dashboard <?php echo $role; ?>
+        </p>
+    </div>
+
+    <style>
+    @keyframes typing {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 100%;
+        }
+    }
+
+    @keyframes blink-caret {
+
+        from,
+        to {
+            border-color: transparent;
+        }
+
+        50% {
+            border-color: black;
+        }
+    }
+
+    #typed-text {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 0.15em solid black;
+        animation: typing 4s steps(40, end) infinite alternate, blink-caret 0.75s step-end infinite;
+    }
+    </style>
+
+    <style>
+    .welcome-message {
+        margin: 80px auto;
+        padding: 30px 20px;
+        text-align: center;
+    }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
 
     <!-- Bootstrap JS and dependencies -->
