@@ -885,46 +885,6 @@ LIMIT 1";
                 <script src="https://code.highcharts.com/modules/series-label.js"></script>
                 <script src="https://code.highcharts.com/modules/exporting.js"></script>
                 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                <?php
-                // Tentukan tabel berdasarkan client name
-                $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
-                    $tabel = 'allianz';
-                } else if ($client_name == 'PT. MSIG Insurance Life') {
-                    $tabel = 'msig';
-                } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
-                    $tabel = 'generali';
-                } else {
-                    die('client_name tidak ditemukan');
-                }
-
-                // Query untuk mendapatkan data TAT Completed dari tabel
-                $sql = "SELECT `TAT Completed` FROM $tabel";
-                $result = mysqli_query($koneksi, $sql);
-                if (!$result) {
-                    die('Query error: ' . mysqli_error($koneksi));
-                }
-
-                // Inisialisasi variabel untuk menghitung jumlah kategori
-                $under14Days = 0;
-                $over14Days = 0;
-
-                // Loop untuk memisahkan data kategori berdasarkan nilai TAT Completed
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $tatCompleted = $row['TAT Completed']; // Ambil nilai TAT Completed
-
-                    // Menambahkan ke kategori berdasarkan nilai 'TAT Completed'
-                    if ($tatCompleted === 'Under 14 Days') {
-                        $under14Days++;
-                    } elseif ($tatCompleted === 'Over 14 Days') {
-                        $over14Days++;
-                    }
-                }
-
-                // Menyusun data untuk chart
-                $categories = ['14 days', 'More than 14 days'];
-                $dataChart = [$under14Days, $over14Days];
-                ?>
                 <h2>TAT Investigasi (Days)</h2>
                 <div id="tatChart" style="width:100%; height:230px;"></div>
 
@@ -934,44 +894,53 @@ LIMIT 1";
 
                 <!-- Bagian JavaScript untuk Chart -->
                 <?php
-                // Query untuk mengambil semua data dari tabel
-                $sql = "SELECT `Claim Type` FROM $tabel";
+                // Query untuk mengambil kolom 'Claim Type' dan 'TAT' dari tabel
+                $sql = "SELECT `Claim Type`, `TAT` FROM $tabel";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (!$result) {
                     die('Query error: ' . mysqli_error($koneksi));
                 }
 
-                // Array untuk menyimpan jumlah per Claim Type
-                $claimCounts = [];
-                $totalCount = 0;
+                // Array untuk menyimpan total TAT dan jumlah data TAT per Claim Type
+                $tatData = [];
+                $tatCounts = [];
 
-                // Menghitung jumlah setiap Claim Type dan total data keseluruhan
+                // Mengumpulkan total TAT dan jumlah data untuk setiap Claim Type
                 while ($row = mysqli_fetch_assoc($result)) {
                     $claimType = $row['Claim Type'];
-                    $totalCount++;
+                    $tatValue = (int)$row['TAT']; // Konversi nilai TAT menjadi integer
 
-                    if (!isset($claimCounts[$claimType])) {
-                        $claimCounts[$claimType] = 1;
+                    // Menginisialisasi array jika Claim Type belum ada
+                    if (!isset($tatData[$claimType])) {
+                        $tatData[$claimType] = $tatValue;   // Total TAT untuk Claim Type
+                        $tatCounts[$claimType] = 1;         // Hitungan TAT untuk Claim Type
                     } else {
-                        $claimCounts[$claimType]++;
+                        $tatData[$claimType] += $tatValue;  // Tambahkan nilai TAT untuk Claim Type yang sama
+                        $tatCounts[$claimType]++;           // Tambah jumlah TAT
                     }
                 }
 
-                // Memproses data untuk chart
-                $claimTypes = array_keys($claimCounts);
-                $tatAchievementData = [];
+                // Mendapatkan Claim Types untuk sumbu x
+                $claimTypes = array_keys($tatData);
 
-                // Hitung persentase dan bulatkan ke bilangan bulat
-                foreach ($claimCounts as $claimType => $count) {
-                    $tatAchievementData[] = ($totalCount > 0) ? round(($count / $totalCount) * 100) : 0;
+                // Menghitung rata-rata TAT untuk setiap Claim Type
+                $tatAchievementData = [];
+                foreach ($claimTypes as $claimType) {
+                    $tatAchievementData[] = ($tatCounts[$claimType] > 0) ? (int)($tatData[$claimType] / $tatCounts[$claimType]) : 0; // Rata-rata TAT per Claim Type sebagai integer
                 }
+
+                // Menghitung rata-rata keseluruhan untuk garis TAT Average
+                $averageTatAchievement = (count($tatAchievementData) > 0) ? (int)(array_sum($tatAchievementData) / count($tatAchievementData)) : 0;
+                $tatAverageData = array_fill(0, count($claimTypes), $averageTatAchievement);
 
                 // Mengonversi data ke format JSON untuk digunakan di JavaScript
                 $claimTypesJSON = json_encode($claimTypes);
                 $tatAchievementDataJSON = json_encode($tatAchievementData);
+                $tatAverageDataJSON = json_encode($tatAverageData);
                 ?>
 
+                <!-- Kode HTML dan JavaScript untuk Grafik -->
                 <script type="text/javascript">
                 document.addEventListener('DOMContentLoaded', function() {
                     Highcharts.chart('tatChart', {
@@ -1011,7 +980,7 @@ LIMIT 1";
                         }, {
                             name: 'TAT Average',
                             type: 'line',
-                            data: [34, 34, 34, 34],
+                            data: <?php echo $tatAverageDataJSON; ?>,
                             color: 'red',
                             marker: {
                                 enabled: false
@@ -1030,7 +999,61 @@ LIMIT 1";
                 });
                 </script>
 
-                <script>
+
+
+                <?php
+                // Tentukan tabel berdasarkan client name
+                $client_name = $client['name'];
+                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                    $tabel = 'allianz';
+                } elseif ($client_name == 'PT. MSIG Insurance Life') {
+                    $tabel = 'msig';
+                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                    $tabel = 'generali';
+                } else {
+                    die('client_name tidak ditemukan');
+                }
+
+                // Query untuk mendapatkan data TAT Completed dari tabel
+                $sql = "SELECT `TAT Completed` FROM $tabel";
+                $result = mysqli_query($koneksi, $sql);
+                if (!$result) {
+                    die('Query error: ' . mysqli_error($koneksi));
+                }
+
+                // Inisialisasi variabel untuk menghitung jumlah kategori
+                $under14Days = 0;
+                $over14Days = 0;
+                $totalCount = 0; // Untuk menghitung jumlah total TAT Completed
+
+                // Loop untuk memisahkan data kategori berdasarkan nilai TAT Completed
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $tatCompleted = $row['TAT Completed']; // Ambil nilai TAT Completed
+                    $totalCount++; // Menambah total count
+
+                    // Menambahkan ke kategori berdasarkan nilai 'TAT Completed'
+                    if ($tatCompleted === 'Under 14 Days') {
+                        $under14Days++;
+                    } elseif ($tatCompleted === 'Over 14 Days') {
+                        $over14Days++;
+                    }
+                }
+
+                // Menghitung rata-rata SLA untuk setiap kategori
+                $averageSLA = ($totalCount > 0) ? (int)(($under14Days + $over14Days) / $totalCount * 14) : 0;
+                $averageSLAData = array_fill(0, 2, $averageSLA); // Mengisi nilai rata-rata SLA untuk setiap kategori
+
+                // Menyusun data untuk chart
+                $categories = ['14 days', 'More than 14 days'];
+                $dataChart = [$under14Days, $over14Days];
+
+                // Mengonversi data ke format JSON untuk digunakan di JavaScript
+                $categoriesJSON = json_encode($categories);
+                $dataChartJSON = json_encode($dataChart);
+                $averageSLADataJSON = json_encode($averageSLAData);
+                ?>
+
+                <script type="text/javascript">
                 // Chart 2: SLA Investigasi (Policy Level)
                 Highcharts.chart('slaChart', {
                     chart: {
@@ -1040,7 +1063,7 @@ LIMIT 1";
                         text: 'SLA Investigasi (Policy Level)'
                     },
                     xAxis: {
-                        categories: <?php echo json_encode($categories); ?>,
+                        categories: <?php echo $categoriesJSON; ?>,
                         crosshair: true
                     },
                     yAxis: {
@@ -1051,8 +1074,17 @@ LIMIT 1";
                     },
                     series: [{
                         name: 'Cases',
-                        data: <?php echo json_encode($dataChart); ?>,
+                        data: <?php echo $dataChartJSON; ?>,
                         color: '#1f78b4'
+                    }, {
+                        name: 'SLA Average',
+                        type: 'line',
+                        data: <?php echo $averageSLADataJSON; ?>,
+                        color: 'red',
+                        marker: {
+                            enabled: true
+                        },
+                        dashStyle: 'Dash'
                     }]
                 });
                 </script>
