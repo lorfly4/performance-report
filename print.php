@@ -132,7 +132,7 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
         <p><br></p>
         <img src="./client/upload/<?php echo htmlspecialchars(string: $image); ?>" alt="Logo"
             style="max-width: 200px; height: auto; margin: auto;">
-        <h1>Periode : <?php echo $periode; ?></h1>
+        <h1>Periode : <?php echo $periode; ?> <?php echo date('Y'); ?></h1>
     </div>
 
     <div class="page-break"></div>
@@ -200,7 +200,7 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
     <p><strong>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</strong>
     </p>
     <p>Wilayah Sebaran Investigasi</p>
-    <div><img src="./img/peta.png" alt=" " style="width: 30vw; height:  10vh;" /></div>
+    <div><img src="./img/peta.png" alt=" " style="width: 93vw; height:  30vh;" /></div>
     <p>Jumlah kasus selesai Per Provinsi</p>
     <p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
     </p>
@@ -480,37 +480,65 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
     }
     ?>
 
-    <p><strong>&nbsp;2. Penerimaan Kasus Investigasi setiap bulannya selama periode Januari - Desember 2023</strong></p>
-    <table style="border-collapse: collapse; width: 70%; height: 256px;" border="1">
-
-        <tbody style="font-size: 15px;">
+    <p><strong>&nbsp;2. Penerimaan Kasus Investigasi setiap bulannya selama periode <?php echo $periode; ?>
+            <?php echo date('Y'); ?></strong></p>
+    <table>
+        <thead>
             <tr style="height: 18px;">
-                <th style="width: 33.3333%; text-align: center; height: 18px;">Monthly Case</th>
-                <th style="width: 33.3333%; text-align: center; height: 18px;">Cases</th>
-                <th style="width: 33.3333%; text-align: center; height: 18px;">%Jumlah Case</th>
+                <th style="width: 33.3333%; height: 18px; text-align: center; background-color: #2c3e50; color: white;">
+                    Monthly Case</th>
+                <th style="width: 33.3333%; height: 18px; text-align: center; background-color: #2c3e50; color: white;">
+                    Cases</th>
+                <th style="width: 33.3333%; height: 18px; text-align: center; background-color: #2c3e50; color: white;">
+                    %Jumlah Case</th>
             </tr>
-            <tr>
-                <?php
-                $bulan = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Oktober', 'November', 'Desember'];
-                $total_insured_name_bulan = array_fill(0, 12, 0);
-                foreach ($result as $key => $value) {
-                    $total_insured_name_bulan[date('n', strtotime($value['Date Month'])) - 1] += 1;
+        </thead>
+        <tbody>
+            <?php
+            $query = "SELECT `Date Month`, COUNT(*) AS `Total` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) GROUP BY `Date Month` ORDER BY FIELD(MONTH(`Date Month`), '4', '5', '6') ASC";
+            $result = mysqli_query($koneksi, $query);
+
+            if (!$result) {
+                die("Query gagal: " . mysqli_error($koneksi));
+            }
+
+            // Inisialisasi array $bulan untuk menyimpan bulan yang ditemukan dalam periode
+            $bulan = [];
+
+            // Iterasi hasil query dan masukkan bulan ke dalam array $bulan
+            while ($row = mysqli_fetch_assoc($result)) {
+                // Format nama bulan dalam bahasa Indonesia tanpa tahun
+                $bulan[] = date('F', strtotime($row['Date Month'])); // Misalnya, "April"
+            }
+
+            // Pastikan $total_insured_name_bulan diinisialisasi sebagai array dengan jumlah elemen sesuai jumlah bulan yang ditemukan
+            $total_insured_name_bulan = array_fill(0, count($bulan), 0);
+
+            // Query kedua untuk mengambil data insured sesuai periode
+            $query_insured = "SELECT `Date Month` FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
+            $result_insured = mysqli_query($koneksi, $query_insured);
+
+            if (!$result_insured) {
+                die("Query gagal: " . mysqli_error($koneksi));
+            }
+
+            // Iterasi data insured dan hitung per bulan
+            while ($row = mysqli_fetch_assoc($result_insured)) {
+                $month_index = array_search(date('F', strtotime($row['Date Month'])), $bulan);
+                if ($month_index !== false) {
+                    $total_insured_name_bulan[$month_index] += 1;
                 }
-                foreach ($bulan as $key => $value) {
-                    echo '<tr style="height: 18px;">';
-                    echo '<td style="width: 33.3333%; height: 18px;">' . $value . '</td>';
-                    echo '<td style="width: 33.3333%; height: 18px; text-align: center;">' . $total_insured_name_bulan[$key] . '</td>';
-                    echo '<td style="width: 33.3333%; height: 18px; text-align: center;">' . number_format(($total_insured_name_bulan[$key] / $total_insured_name_all) * 100, 1, '.', ',') . '%</td>';
-                    echo '</tr>';
-                }
-                ?>
-            </tr>
+            }
+
+            foreach ($bulan as $key => $value) {
+                echo '<tr style="height: 18px;">';
+                echo '<td style="width: 33.3333%; height: 18px;">' . $value . '</td>';
+                echo '<td style="width: 33.3333%; height: 18px; text-align: center;">' . $total_insured_name_bulan[$key] . '</td>';
+                echo '<td style="width: 33.3333%; height: 18px; text-align: center;">' . number_format(($total_insured_name_bulan[$key] / $total_insured_name_all) * 100, 1, '.', ',') . '%</td>';
+                echo '</tr>';
+            }
+            ?>
         </tbody>
-    </table>
-
-
-    </tr>
-    </tbody>
     </table>
     <ul>
         <?php
@@ -920,14 +948,14 @@ ORDER BY `Date Month` ASC";
 
                     // Daftar klaim spesifik
                     $klaimTypes = ['DC' => 'Klaim Meninggal (DC)', 'HS' => 'Hospital (HS)', 'CI' => 'Klaim Critical Illness (CI)', 'TPD' => 'Klaim TPD'];
-
-                    // Menampilkan hasil
                     foreach ($klaimTypes as $type => $label) {
                         // Hitung jumlah klaim untuk tipe ini
-                        $jumlahKlaim = isset($jenisKlaim[$type]) ? $jenisKlaim[$type] : 0;
-                        $persentase = number_format(($jumlahKlaim / $jumlahPolis) * 100, 2, '.', ',');
+                        if (isset($jenisKlaim[$type])) {
+                            $jumlahKlaim = $jenisKlaim[$type];
+                            $persentase = number_format(($jumlahKlaim / $jumlahPolis) * 100, 2, '.', ',');
 
-                        echo "$label sebanyak $jumlahKlaim Polis (atau $persentase% dari total $jumlahPolis Polis).<br>";
+                            echo "$label sebanyak $jumlahKlaim Polis (atau $persentase% dari total $jumlahPolis Polis).<br>";
+                        }
                     }
 
                     // Kesimpulan berdasarkan jenis klaim terbanyak
@@ -1064,7 +1092,7 @@ ORDER BY `Date Month` ASC";
                         }, {
                             name: 'SLA',
                             type: 'line',
-                            data: [14, 14, 14, 14],
+                            data: [14, 14],
                             color: 'yellow',
                             dashStyle: 'Dash',
                             marker: {
@@ -1387,7 +1415,7 @@ ORDER BY `Date Month` ASC";
                         type: 'column'
                     },
                     title: {
-                        text: 'Temuan Investigasi'
+                        text: 'Hasil Investigasi'
                     },
                     xAxis: {
                         categories: <?php echo json_encode($categories); ?> // Data dari PHP
@@ -1633,9 +1661,13 @@ ORDER BY `Date Month` ASC";
                 },
                 plotOptions: {
                     series: {
-                        grouping: false, // Memisahkan setiap temuan
+                        grouping: true, // Memisahkan setiap temuan
                         dataLabels: {
-                            enabled: true
+                            enabled: true,
+                            formatter: function() {
+                                return this.y > 0 ? this.y :
+                                    null; // Hanya tampilkan jika nilainya lebih besar dari 0
+                            }
                         }
                     }
                 },
@@ -1646,6 +1678,7 @@ ORDER BY `Date Month` ASC";
                             echo "{
                     name: '" . $category . "',
                     data: " . json_encode($data_series[$category]) . ",
+                    color: Highcharts.getOptions().colors[" . array_search($category, $categories) . "], // Memilih warna berbeda untuk setiap kategori
                     pointPadding: 0.2, // Jarak antar kolom
                     pointPlacement: 'on' // Posisikan setiap kategori pada kolom
                 },";
@@ -1748,7 +1781,7 @@ ORDER BY `Date Month` ASC";
             <p>&nbsp;</p>
             <style>
             table {
-                width: 60%;
+                width: 100%;
                 border-collapse: collapse;
                 margin: 20px 0;
             }
@@ -1786,7 +1819,7 @@ ORDER BY `Date Month` ASC";
 
                 <h2>Hasil Investigasi</h2>
 
-                <table>
+                <table class="up">
                     <thead>
                         <tr>
                             <th>Hasil Investigasi</th>
