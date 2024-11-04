@@ -49,6 +49,12 @@ if (!$result) {
     die('Query error: ' . mysqli_error($koneksi));
 }
 ?>
+
+<?php
+$periode_sql = "SELECT periode FROM document WHERE id = $id";
+$periode_result = mysqli_query($koneksi, $periode_sql);
+$periode = mysqli_fetch_array($periode_result)['periode'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,8 +131,8 @@ if (!$result) {
         <h1>PERFORMANCE REPORT</h1>
         <p><br></p>
         <img src="./client/upload/<?php echo htmlspecialchars(string: $image); ?>" alt="Logo"
-            style="width: 300px; height: auto; margin: auto;">
-        <h1>Periode : <?php echo $p['periode']; ?></h1>
+            style="max-width: 200px; height: auto; margin: auto;">
+        <h1>Periode : <?php echo $periode; ?></h1>
     </div>
 
     <div class="page-break"></div>
@@ -170,7 +176,7 @@ if (!$result) {
     </p>
     <p>Salam,</p>
     <p><br /></p>
-    <p>Jakarta, 14 Januari 2024</p>
+    <p>Jakarta, <?php echo $p['tanggal']; ?></p>
     <p><strong>PT Deswa Invisco Multitama (DIM) </strong></p>
     <p><br /></p>
     <p>
@@ -208,21 +214,61 @@ if (!$result) {
     </ol>
     <p style="margin-top:8.0pt;margin-right:-28.15pt;margin-bottom:.0001pt;margin-left:13.5pt;text-align:justify;"><span
             style="font-size:16px;color:black;">&nbsp; &nbsp; &nbsp; &nbsp; Total kasus yang telah dilakukan investigasi
-            pada periode Januari 2023 &ndash; Desember 2023 adalah sebanyak
+            pada periode <?php echo $periode; ?> adalah sebanyak
             <?php
+            include 'koneksi.php'; // Pastikan koneksi ke database
+
+            // Ambil nama client dari array $client
+            $client_name = $client['name'];
+
+            // Tentukan tabel yang akan digunakan berdasarkan nama client
+            if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                $tabel = 'allianz';
+            } else if ($client_name == 'PT. MSIG Insurance Life') {
+                $tabel = 'msig';
+            } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                $tabel = 'generali';
+            } else {
+                die('client_name tidak ditemukan');
+            }
+
+            $periode_sql = "SELECT periode FROM document WHERE id = $id";
+            $periode_result = mysqli_query($koneksi, $periode_sql);
+            $periode = mysqli_fetch_array($periode_result)['periode'];
+
+            // Pecah periode menjadi array berdasarkan tanda pemisah " - "
+            $bulanDipilih = explode(' - ', $periode);
+
+            // Buat klausa WHERE untuk `Date Month` berdasarkan bulan dalam $bulanDipilih
+            $bulanKondisi = "'" . implode("', '", $bulanDipilih) . "'";
+
+            // Query untuk mendapatkan data berdasarkan tabel dan periode yang dipilih
+            $query = "SELECT `Insured Name`, `Nomor Polis`, `Date Month` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
+            $result = mysqli_query($koneksi, $query);
+
+            if (!$result) {
+                die('Query error: ' . mysqli_error($koneksi));
+            }
+
+            // Hitung total unik `Insured Name`
             $insured_name = array();
-            foreach ($result as $key => $value) {
+            foreach ($result as $value) {
                 $insured_name = array_merge($insured_name, explode(',', $value['Insured Name']));
             }
             $total_insured_name = count(array_unique($insured_name));
-            echo number_format($total_insured_name, 0, '.', ','); ?> nasabah
-            dengan total polis <?php
-                                $nomor_polis = array();
-                                foreach ($result as $key => $value) {
-                                    $nomor_polis = array_merge($nomor_polis, explode(',', $value['Nomor Polis']));
-                                }
-                                $total_nomor_polis = count(array_unique($nomor_polis));
-                                echo number_format($total_nomor_polis, 0, '.', ','); ?> </p>
+            echo number_format($total_insured_name, 0, '.', ',') . " nasabah";
+
+            // Hitung total unik `Nomor Polis`
+            $nomor_polis = array();
+            foreach ($result as $value) {
+                $nomor_polis = array_merge($nomor_polis, explode(',', $value['Nomor Polis']));
+            }
+            $total_nomor_polis = count(array_unique($nomor_polis));
+            echo " dengan total polis " . number_format($total_nomor_polis, 0, '.', ',');
+            ?>
+
+
+    </p>
     <div id="_com_2" language="JavaScript"><br></div>
     <table style="border-collapse: collapse; width: 90%; height: 482px;" border="1">
         <tbody>
@@ -244,111 +290,136 @@ if (!$result) {
             </tr>
 
             <?php
-            $provinsi_list = array();
-            $nomor_polis_all = array(); // Inisialisasi array
-            $insured_name_all = array(); // Inisialisasi array
-            $total_up_all_all = 0; // Inisialisasi total uang pertanggungan
+            // Ambil periode dari database
+            $periode_sql = "SELECT periode FROM document WHERE id = $id";
+            $periode_result = mysqli_query($koneksi, $periode_sql);
+            $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
 
-            // Looping untuk membangun daftar provinsi dari kolom Provinsi dan Provinsi 2
-            foreach ($result as $key => $value) {
-                if (!empty($value['Provinsi'])) {
-                    $provinsi_list[] = ucwords(strtolower($value['Provinsi']));
-                }
-                if (!empty($value['Provinsi 2'])) {
-                    $provinsi_list[] = ucwords(strtolower($value['Provinsi 2']));
-                }
-            }
-            $provinsi_list = array_unique($provinsi_list); // Hapus duplikat
-            sort($provinsi_list); // Urutkan provinsi
-
-            $total_nomor_polis_all = 0;
-            $total_insured_name_all = 0;
-            $total_up_all_all = 0;
-
-            // Hitung total nomor polis, insured name, dan uang pertanggungan dari seluruh data
-            foreach ($result as $key => $value) {
-                $nomor_polis_all = array_merge($nomor_polis_all, explode(',', $value['Nomor Polis']));
-                $total_nomor_polis_all += count(array_unique(explode(',', $value['Nomor Polis'])));
-
-                $insured_name_all = array_merge($insured_name_all, explode(',', $value['Insured Name']));
-                $total_insured_name_all += count(array_unique(explode(',', $value['Insured Name'])));
-
-                $uang_pertanggungan_all = array_map('intval', explode(',', $value['UP']));
-                $total_up_all_all += array_sum($uang_pertanggungan_all);
+            // Cek apakah periode diambil dengan benar
+            if ($periode === null) {
+                die("Periode tidak ditemukan untuk ID: $id");
             }
 
-            // Loop untuk menampilkan data per provinsi
-            foreach ($provinsi_list as $provinsi) {
+            // Asumsikan $bulan_periode sudah otomatis terisi sesuai dengan $periode
+            $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+
+            // Siapkan kondisi untuk query
+            $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";
+
+            // Query untuk menarik data
+            $query = "SELECT * FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
+            $result = mysqli_query($koneksi, $query);
+
+            // Cek hasil query
+            if (!$result) {
+                die("Query gagal: " . mysqli_error($koneksi));
+            }
+
+            // Cek apakah ada data yang ditemukan
+            if (mysqli_num_rows($result) === 0) {
+                echo '<tr><td colspan="7" style="text-align: center;">Data tidak ditemukan</td></tr>';
+            } else {
+                // Inisialisasi variabel total
+                $total_nomor_polis_all = 0;
+                $total_insured_name_all = 0;
+                $total_up_all_all = 0;
+
+                // Daftar untuk menyimpan hasil query
+                $data = [];
+
+                // Ambil data dari hasil query dan hitung totals
+                while ($value = mysqli_fetch_assoc($result)) {
+                    $data[] = $value;
+                    if (!empty($value['Nomor Polis'])) {
+                        $nomor_polis_all = array_merge($nomor_polis_all ?? [], explode(',', $value['Nomor Polis']));
+                    }
+
+                    if (!empty($value['Insured Name'])) {
+                        $insured_name_all = array_merge($insured_name_all ?? [], explode(',', $value['Insured Name']));
+                    }
+                }
+
+                // Hitung total dari nomor polis dan nama yang diasuransikan
+                $total_nomor_polis_all = count(array_unique($nomor_polis_all ?? []));
+                $total_insured_name_all = count(array_unique($insured_name_all ?? []));
+
+                // Ambil provinsi dari data
+                $provinsi_list = [];
+
+                foreach ($data as $value) {
+                    if (!empty($value['Provinsi'])) {
+                        $provinsi_list[] = $value['Provinsi'];
+                    }
+                }
+
+                $provinsi_list = array_unique($provinsi_list);
+                sort($provinsi_list);
+
+                // Loop untuk menampilkan data per provinsi
+                foreach ($provinsi_list as $provinsi) {
             ?>
             <tr style="height: 22px;">
                 <td style="width: 16.1%; text-align: center; height: 22px;"><?php echo $provinsi; ?></td>
                 <?php
-                    // Case by Polis
-                    $nomor_polis = array();
-                    foreach ($result as $key => $value) {
-                        if (strtolower($value['Provinsi']) == strtolower($provinsi) || strtolower($value['Provinsi 2']) == strtolower($provinsi)) {
-                            $nomor_polis = array_merge($nomor_polis, explode(',', $value['Nomor Polis']));
+                        // Case by Polis
+                        $nomor_polis = [];
+                        foreach ($data as $value) {
+                            if (strtolower($value['Provinsi']) == strtolower($provinsi)) {
+                                if (!empty($value['Nomor Polis'])) {
+                                    $nomor_polis = array_merge($nomor_polis, explode(',', $value['Nomor Polis']));
+                                }
+                            }
                         }
-                    }
-                    $total_nomor_polis = count(array_unique($nomor_polis));
-                    echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_nomor_polis, 0, '.', ',') . '</td>';
+                        $total_nomor_polis = count(array_unique($nomor_polis));
+                        echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_nomor_polis, 0, '.', ',') . '</td>';
 
-                    // % Total Polis
-                    $persentase = ($total_nomor_polis / $total_nomor_polis_all) * 100;
-                    echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase, 2, '.', ',') . '%</td>';
+                        // % Total Polis
+                        $persentase = $total_nomor_polis_all > 0 ? ($total_nomor_polis / $total_nomor_polis_all) * 100 : 0;
+                        echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase, 2, '.', ',') . '%</td>';
 
-                    // Case by Client
-                    $insured_name = array();
-                    foreach ($result as $key => $value) {
-                        if (strtolower($value['Provinsi']) == strtolower($provinsi) || strtolower($value['Provinsi 2']) == strtolower($provinsi)) {
-                            $insured_name = array_merge($insured_name, explode(',', $value['Insured Name']));
+                        // Case by Client
+                        $insured_name = [];
+                        foreach ($data as $value) {
+                            if (strtolower($value['Provinsi']) == strtolower($provinsi)) {
+                                if (!empty($value['Insured Name'])) {
+                                    $insured_name = array_merge($insured_name, explode(',', $value['Insured Name']));
+                                }
+                            }
                         }
-                    }
-                    $total_insured_name = count(array_unique($insured_name));
-                    echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_insured_name, 0, '.', ',') . '</td>';
+                        $total_insured_name = count(array_unique($insured_name));
+                        echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_insured_name, 0, '.', ',') . '</td>';
 
-                    // % Case by Client
-                    $persentase_insured_name = ($total_insured_name / $total_insured_name_all) * 100;
-                    echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase_insured_name, 2, '.', ',') . '%</td>';
+                        // % Case by Client
+                        $persentase_insured_name = $total_insured_name_all > 0 ? ($total_insured_name / $total_insured_name_all) * 100 : 0;
+                        echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase_insured_name, 2, '.', ',') . '%</td>';
 
-                    // Total UP
-                    $total_up_all = 0;
-                    foreach ($result as $key => $value) {
-                        if (strtolower($value['Provinsi']) == strtolower($provinsi) || strtolower($value['Provinsi 2']) == strtolower($provinsi)) {
-                            $uang_pertanggungan = array_map('intval', explode(',', $value['UP']));
-                            $total_up_all += array_sum($uang_pertanggungan);
+                        // Total UP or Klaim Yang Diajukan
+                        $total_up_all = 0;
+                        foreach ($data as $value) {
+                            if (strtolower($value['Provinsi']) == strtolower($provinsi)) {
+                                $up_data = !empty($value['UP']) ? $value['UP'] : $value['Klaim Yang Diajukan'];
+                                if (!empty($up_data)) {
+                                    $uang_pertanggungan = array_map('intval', explode(',', $up_data));
+                                    $total_up_all += array_sum($uang_pertanggungan);
+                                }
+                            }
                         }
-                    }
-                    echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_up_all, 0, '.', ',') . '</td>';
+                        echo '<td style="width: 12.4714%; height: 22px;">' . number_format($total_up_all, 0, '.', ',') . '</td>';
 
-                    // % Total UP
-                    $persentase_uang_pertanggungan = ($total_up_all / $total_up_all_all) * 100;
-                    echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase_uang_pertanggungan, 2, '.', ',') . '%</td>';
-                    ?>
+                        // % Total UP
+                        $total_up_all_all += $total_up_all;
+                        $persentase_uang_pertanggungan = $total_up_all_all > 0 ? ($total_up_all / $total_up_all_all) * 100 : 0;
+                        echo '<td style="width: 14.2857%; height: 22px;">' . number_format($persentase_uang_pertanggungan, 2, '.', ',') . '%</td>';
+                        ?>
             </tr>
             <?php
+                }
             }
             ?>
 
-            <tr style="height: 22px;">
-                <td style="width: 16.1%; text-align: center; height: 22px; background-color: #007bff; color: white;">
-                    Total</td>
-                <td style="width: 12.4714%; text-align: center; height: 22px; background-color: #007bff; color: white;">
-                    <?php echo number_format($total_nomor_polis_all, 0, '.', ','); ?>
-                </td>
-                <td style="width: 14.2857%; text-align: center; height: 22px; background-color: #007bff; color: white;">
-                    100%</td>
-                <td style="width: 12.4714%; text-align: center; height: 22px; background-color: #007bff; color: white;">
-                    <?php echo number_format($total_insured_name_all, 0, '.', ','); ?>
-                </td>
-                <td style="width: 14.2857%; height: 22px; text-align: center; background-color: #007bff; color: white;">
-                    100%</td>
-                <td style="width: 12.4714%; height: 22px; text-align: center; background-color: #007bff; color: white;">
-                    <?php echo number_format($total_up_all, 0, '.', ','); ?>
-                </td>
-                <td style="width: 14.2857%; height: 22px; text-align: center; background-color: #007bff; color: white;">
-                    100%</td>
-            </tr>
+
+
+
 
             <!-- <tr style="height: 22px;">
                 <td style="width: 16.1%; text-align: center; height: 22px; background-color: #007bff; color: white;">
@@ -405,7 +476,7 @@ if (!$result) {
             $counter++;
         }
     } else {
-        echo "<p>Tidak ada top yang ditemukan.</p>";
+        echo "";
     }
     ?>
 
@@ -436,6 +507,11 @@ if (!$result) {
             </tr>
         </tbody>
     </table>
+
+
+    </tr>
+    </tbody>
+    </table>
     <ul>
         <?php
         // Koneksi ke database
@@ -447,18 +523,19 @@ if (!$result) {
     COUNT(*) AS `Total`, 
     YEAR(`DateYear`) AS `dateyear`
 FROM $tabel 
-GROUP BY `Date Month`, dateyear  -- Menambahkan dateyear ke GROUP BY
-ORDER BY `Total` DESC 
-LIMIT 1";
+WHERE `Date Month` IN ($bulanKondisi) 
+GROUP BY `Date Month`, dateyear -- Menambahkan dateyear ke GROUP BY
+ORDER BY `Date Month` ASC";
 
         // Eksekusi query
         $result = mysqli_query($koneksi, $sql);
+
 
         // Cek apakah hasil query tidak kosong
         $date_month_terbanyak = mysqli_fetch_assoc($result);
 
         // Total semua polis yang diterima (untuk menghitung persentase)
-        $sql_total = "SELECT COUNT(*) AS `TotalAll` FROM $tabel";
+        $sql_total = "SELECT COUNT(*) AS `TotalAll` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
         $result_total = mysqli_query($koneksi, $sql_total);
         $total_insured_name_all = mysqli_fetch_assoc($result_total)['TotalAll'];
 
@@ -499,7 +576,7 @@ LIMIT 1";
         <ul>
             <?php
             // Query untuk mendapatkan data tambahan (misalnya untuk nomor polis dan provinsi)
-            $sql_detail = "SELECT `Date Month`, `Nomor Polis`, `Provinsi`, `UP` FROM $tabel"; // Ambil semua data yang diperlukan
+            $sql_detail = "SELECT `Date Month`, `Nomor Polis`, `Provinsi`, `UP` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC"; // Ambil semua data yang diperlukan
             $result_detail = mysqli_query($koneksi, $sql_detail);
 
             // Memproses jumlah entri per bulan
@@ -580,7 +657,7 @@ LIMIT 1";
         }
 
         // Query untuk mendapatkan data
-        $sql = "SELECT `Claim Type` FROM $tabel";
+        $sql = "SELECT `Claim Type` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
         $hasil = mysqli_query($koneksi, $sql);
         if (!$hasil) {
             die('Query error: ' . mysqli_error($koneksi));
@@ -733,7 +810,7 @@ LIMIT 1";
                         die('client_name tidak ditemukan');
                     }
 
-                    $sql = "SELECT * FROM $tabel";
+                    $sql = "SELECT * FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                     $hasil = mysqli_query($koneksi, $sql);
                     if (!$hasil) {
                         die('Query error: ' . mysqli_error($koneksi));
@@ -752,10 +829,8 @@ LIMIT 1";
                         foreach ($hasilArray as $value) {
                             // Ambil 'Claim Type' dari setiap baris
                             $claimTypeName = $value['Claim Type'];
-
                             // Cek apakah 'UP' kosong, jika kosong gunakan 'Klaim Yang Diajukan'
                             $upValue = !empty($value['UP']) ? (int) $value['UP'] : (int) $value['Klaim Yang Diajukan'];
-
                             // Jika 'Claim Type' belum ada di array, tambahkan
                             if (!isset($claimType[$claimTypeName])) {
                                 $claimType[$claimTypeName] = 1;
@@ -799,7 +874,8 @@ LIMIT 1";
                 </tfoot>
             </table>
             <p><strong>Analisa:</strong></p>
-            <p>Adapun jenis klaim yang telah dilakukan investigasi berdasarkan jumlah polis adalah sebagai berikut:</p>
+            <p>Adapun jenis klaim yang telah dilakukan investigasi berdasarkan jumlah polis adalah sebagai
+                berikut:</p>
             <p>&nbsp;</p>
             <ol>
                 <?php
@@ -823,7 +899,7 @@ LIMIT 1";
                     die('client_name tidak ditemukan');
                 }
 
-                $sql = "SELECT * FROM $tabel";
+                $sql = "SELECT * FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $hasil = mysqli_query($koneksi, $sql);
                 if (!$hasil) {
                     die('Query error: ' . mysqli_error($koneksi));
@@ -861,7 +937,7 @@ LIMIT 1";
 
                     // Menampilkan kesimpulan
                     echo "Dari informasi tersebut dapat ditarik kesimpulan jika kasus klaim paling banyak adalah " .
-                        "$klaimTypes[$jenisKlaimTerbanyak], yaitu $persentaseTerbanyak% dari total Polis yang dilakukan investigasif.";
+                        (isset($klaimTypes[$jenisKlaimTerbanyak]) ? $klaimTypes[$jenisKlaimTerbanyak] : 'Unknown') . ", yaitu $persentaseTerbanyak% dari total Polis yang dilakukan investigasi.";
 
                     // Menutup hasil
                     $hasil->free();
@@ -895,7 +971,7 @@ LIMIT 1";
                 <!-- Bagian JavaScript untuk Chart -->
                 <?php
                 // Query untuk mengambil kolom 'Claim Type' dan 'TAT' dari tabel
-                $sql = "SELECT `Claim Type`, `TAT` FROM $tabel";
+                $sql = "SELECT `Claim Type`, `TAT` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (!$result) {
@@ -1015,7 +1091,7 @@ LIMIT 1";
                 }
 
                 // Query untuk mendapatkan data TAT Completed dari tabel
-                $sql = "SELECT `TAT Completed` FROM $tabel";
+                $sql = "SELECT `TAT Completed` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $result = mysqli_query($koneksi, $sql);
                 if (!$result) {
                     die('Query error: ' . mysqli_error($koneksi));
@@ -1100,7 +1176,7 @@ LIMIT 1";
                     <tbody>
                         <?php
                         // Query untuk mengambil semua data dari tabel
-                        $sql = "SELECT `TAT Completed` FROM $tabel";
+                        $sql = "SELECT `TAT Completed` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                         $result = mysqli_query($koneksi, $sql);
 
                         if (!$result) {
@@ -1161,7 +1237,7 @@ LIMIT 1";
                 }
 
                 // Query to count distinct Nomor Polis
-                $sql_polis_count = "SELECT COUNT(DISTINCT `Nomor Polis`) AS total_polis FROM $tabel";
+                $sql_polis_count = "SELECT COUNT(DISTINCT `Nomor Polis`) AS total_polis FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $result_polis_count = mysqli_query($koneksi, $sql_polis_count);
 
                 if (!$result_polis_count) {
@@ -1232,7 +1308,7 @@ LIMIT 1";
                         $counter++;
                     }
                 } else {
-                    echo "<p>Tidak ada tat yang ditemukan.</p>";
+                    echo "";
                 }
                 ?>
                 <p>&nbsp;</p>
@@ -1248,22 +1324,41 @@ LIMIT 1";
                 // Koneksi ke database
                 include 'koneksi.php';
 
-                // Query untuk mengambil data dari field 'result'
+                // Tentukan tabel berdasarkan nama client
                 $client_name = $client['name'];
                 if ($client_name == 'PT Asuransi Allianz Indonesia') {
                     $tabel = 'allianz';
-                } else if ($client_name == 'PT. MSIG Insurance Life') {
+                } elseif ($client_name == 'PT. MSIG Insurance Life') {
                     $tabel = 'msig';
-                } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
                     $tabel = 'generali';
                 } else {
                     die('client_name tidak ditemukan');
                 }
 
-                $sql = "SELECT result, COUNT(*) as cases_count FROM $tabel GROUP BY result";
-                $temuan = mysqli_query($koneksi, $sql);
-                if (!$temuan) {
-                    die('Query error: ' . mysqli_error($koneksi));
+                // Ambil periode dari tabel document berdasarkan ID
+                $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                $periode_result = mysqli_query($koneksi, $periode_sql);
+                $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
+
+                // Cek apakah periode diambil dengan benar
+                if ($periode === null) {
+                    die("Periode tidak ditemukan untuk ID: $id");
+                }
+
+                // Proses periode menjadi array bulan
+                $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+
+                // Siapkan kondisi bulan untuk query
+                $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";
+
+                // Query untuk menarik data berdasarkan `Date Month` dalam periode
+                $query = "SELECT result, COUNT(*) as cases_count FROM $tabel WHERE `Date Month` IN ($bulanKondisi) GROUP BY result ORDER BY result ASC";
+                $result = mysqli_query($koneksi, $query);
+
+                // Cek hasil query
+                if (!$result) {
+                    die("Query gagal: " . mysqli_error($koneksi));
                 }
 
                 // Inisialisasi variabel untuk kategori dan data
@@ -1271,9 +1366,9 @@ LIMIT 1";
                 $data_cases = array();
                 $data_percent = array();
 
-                // Memasukkan data dari database ke array
+                // Memasukkan data dari database ke array dan menghitung total kasus
                 $total_cases = 0;
-                while ($row = mysqli_fetch_assoc($temuan)) {
+                while ($row = mysqli_fetch_assoc($result)) {
                     $categories[] = $row['result'];
                     $data_cases[] = (int)$row['cases_count'];  // Cast ke integer
                     $total_cases += $row['cases_count'];       // Hitung total untuk persentase
@@ -1284,6 +1379,7 @@ LIMIT 1";
                     $data_percent[] = round(($count / $total_cases) * 100, 2); // Hitung persentase
                 }
                 ?>
+
 
                 <script>
                 Highcharts.chart('chart2', {
@@ -1328,13 +1424,42 @@ LIMIT 1";
                 // Koneksi ke database
                 include 'koneksi.php';
 
-                // Query untuk mendapatkan total nomor polis
-                $sql_total = "SELECT COUNT(*) AS TotalPolis FROM $tabel"; // Gantilah '$tabel' dengan nama tabel Anda
+                // Tentukan tabel berdasarkan nama client
+                $client_name = $client['name'];
+                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                    $tabel = 'allianz';
+                } elseif ($client_name == 'PT. MSIG Insurance Life') {
+                    $tabel = 'msig';
+                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                    $tabel = 'generali';
+                } else {
+                    die('client_name tidak ditemukan');
+                }
+
+                // Ambil ID dari GET dan ambil periode dari tabel document berdasarkan ID
+                $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+                $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                $periode_result = mysqli_query($koneksi, $periode_sql);
+                $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
+
+                // Cek apakah periode diambil dengan benar
+                if ($periode === null) {
+                    die("Periode tidak ditemukan untuk ID: $id");
+                }
+
+                // Proses periode menjadi array bulan
+                $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+
+                // Siapkan kondisi bulan untuk query
+                $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";
+
+                // Query untuk mendapatkan total nomor polis dalam periode
+                $sql_total = "SELECT COUNT(*) AS TotalPolis FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
                 $result_total = mysqli_query($koneksi, $sql_total);
                 $total_nomor_polis_all = mysqli_fetch_assoc($result_total)['TotalPolis'];
 
-                // Query untuk mendapatkan data dari kolom 'Result'
-                $sql_result = "SELECT Result FROM $tabel"; // Gantilah '$tabel' dengan nama tabel Anda
+                // Query untuk mendapatkan data dari kolom 'Result' dalam periode
+                $sql_result = "SELECT Result FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
                 $result = mysqli_query($koneksi, $sql_result);
 
                 // Menghitung jumlah kasus berdasarkan nilai 'Result'
@@ -1358,22 +1483,21 @@ LIMIT 1";
                 echo "<br>";
 
                 // Menampilkan bagian kedua
-                // Query untuk mendapatkan total nasabah dan polis
-                $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+                // Query untuk mendapatkan total nasabah dan polis sesuai dengan ID
                 $sql = "SELECT * FROM analisa_hasil_investigasi WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
-
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<ol start='2'>";
                         echo "<li>" . nl2br(htmlspecialchars($row['hasil_investigasi'])) . "</li>";
                         echo "</ol>";
                     }
                 } else {
-                    echo "<p>Tidak ada hasil_investigasi yang ditemukan.</p>";
+                    echo "";
                 }
                 ?>
+
 
             </ol>
             <div class="page-break"></div>
@@ -1388,8 +1512,35 @@ LIMIT 1";
             // Koneksi ke database
             include 'koneksi.php';
 
-            // Query untuk mengambil semua provinsi dari database
-            $sql_provinsi = "SELECT DISTINCT provinsi FROM $tabel";
+            // Tentukan tabel berdasarkan nama client
+            $client_name = $client['name'];
+            if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                $tabel = 'allianz';
+            } elseif ($client_name == 'PT. MSIG Insurance Life') {
+                $tabel = 'msig';
+            } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                $tabel = 'generali';
+            } else {
+                die('client_name tidak ditemukan');
+            }
+
+            // Ambil ID dari GET dan ambil periode dari tabel document berdasarkan ID
+            $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+            $periode_sql = "SELECT periode FROM document WHERE id = $id";
+            $periode_result = mysqli_query($koneksi, $periode_sql);
+            $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
+
+            // Cek apakah periode diambil dengan benar
+            if ($periode === null) {
+                die("Periode tidak ditemukan untuk ID: $id");
+            }
+
+            // Proses periode menjadi array bulan
+            $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+            $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";  // Siapkan kondisi bulan untuk query
+
+            // Query untuk mengambil semua provinsi dari database berdasarkan periode
+            $sql_provinsi = "SELECT DISTINCT provinsi FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
             $result_provinsi = mysqli_query($koneksi, $sql_provinsi);
 
             if (!$result_provinsi) {
@@ -1398,8 +1549,6 @@ LIMIT 1";
 
             // Inisialisasi array provinsi
             $provinsi = array();
-
-            // Mengisi array provinsi dengan data dari query
             while ($row = mysqli_fetch_assoc($result_provinsi)) {
                 $provinsi[] = $row['provinsi'];
             }
@@ -1409,8 +1558,8 @@ LIMIT 1";
                 die('Tidak ada data provinsi yang ditemukan.');
             }
 
-            // Kategori temuan yang ingin diambil dari database (kategori dinamis)
-            $sql_categories = "SELECT DISTINCT result FROM $tabel";
+            // Query untuk mengambil kategori temuan yang dinamis berdasarkan periode
+            $sql_categories = "SELECT DISTINCT result FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
             $result_categories = mysqli_query($koneksi, $sql_categories);
 
             if (!$result_categories) {
@@ -1419,21 +1568,22 @@ LIMIT 1";
 
             // Inisialisasi array untuk kategori temuan
             $categories = array();
-
-            // Mengisi array kategori temuan dengan data dari query
             while ($row = mysqli_fetch_assoc($result_categories)) {
                 $categories[] = $row['result'];
             }
 
-            // Inisialisasi data series untuk setiap kategori secara dinamis
+            // Inisialisasi data series untuk setiap kategori
             $data_series = array();
             foreach ($categories as $category) {
                 $data_series[$category] = array_fill(0, count($provinsi), 0);
             }
 
-            // Query untuk mengambil data sesuai dengan provinsi dan kategori temuan
+            // Query untuk mengambil data sesuai dengan provinsi dan kategori temuan berdasarkan periode
             foreach ($categories as $category) {
-                $sql = "SELECT provinsi, COUNT(*) as cases_count FROM $tabel WHERE result = '$category' GROUP BY provinsi";
+                $sql = "SELECT provinsi, COUNT(*) as cases_count 
+                FROM $tabel 
+                WHERE result = '$category' AND `Date Month` IN ($bulanKondisi) 
+                GROUP BY provinsi";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (!$result) {
@@ -1441,9 +1591,9 @@ LIMIT 1";
                 }
 
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $provinsi_index = array_search($row['provinsi'], $provinsi); // Temukan index provinsi
+                    $provinsi_index = array_search($row['provinsi'], $provinsi);  // Temukan index provinsi
                     if ($provinsi_index !== false) {
-                        $data_series[$category][$provinsi_index] = (int)$row['cases_count']; // Simpan jumlah kasus
+                        $data_series[$category][$provinsi_index] = (int)$row['cases_count'];  // Simpan jumlah kasus
                     }
                 }
             }
@@ -1528,7 +1678,7 @@ LIMIT 1";
                     $counter++;
                 }
             } else {
-                echo "<p>Tidak ada analisa yang ditemukan.</p>";
+                echo "";
             }
             ?>
             <p>&nbsp;</p>
@@ -1649,20 +1799,38 @@ LIMIT 1";
                     </thead>
                     <tbody>
                         <?php
-                        // Fetching the correct table based on client name
+                        // Koneksi ke database
+                        include 'koneksi.php';
+
+                        // Tentukan tabel berdasarkan nama client
                         $client_name = $client['name'];
                         if ($client_name == 'PT Asuransi Allianz Indonesia') {
                             $tabel = 'allianz';
-                        } else if ($client_name == 'PT. MSIG Insurance Life') {
+                        } elseif ($client_name == 'PT. MSIG Insurance Life') {
                             $tabel = 'msig';
-                        } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                        } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
                             $tabel = 'generali';
                         } else {
                             die('client_name tidak ditemukan');
                         }
 
-                        // SQL query to fetch data from the selected table
-                        $sql = "SELECT * FROM $tabel";
+                        // Ambil periode dari tabel document berdasarkan ID
+                        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+                        $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                        $periode_result = mysqli_query($koneksi, $periode_sql);
+                        $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
+
+                        // Cek apakah periode diambil dengan benar
+                        if ($periode === null) {
+                            die("Periode tidak ditemukan untuk ID: $id");
+                        }
+
+                        // Proses periode menjadi array bulan
+                        $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+                        $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";  // Siapkan kondisi bulan untuk query
+
+                        // SQL query to fetch data from the selected table with date filter
+                        $sql = "SELECT * FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
                         $result = mysqli_query($koneksi, $sql);
                         if (!$result) {
                             die('Query error: ' . mysqli_error($koneksi));
@@ -1723,6 +1891,7 @@ LIMIT 1";
 
 
 
+
                         <tr>
                             <th>Total</th>
                             <th><?php echo number_format($total_up_all, 0, ',', '.'); ?></th>
@@ -1738,11 +1907,43 @@ LIMIT 1";
                 <p><strong>Analisa:</strong></p>
                 <ol>
                     <?php
-                    // Asumsi koneksi database sudah dibuat sebelumnya
+                    // Koneksi ke database
+                    include 'koneksi.php';
 
-                    // Query untuk mengambil semua data
-                    $sql = "SELECT * FROM $tabel";
+                    // Tentukan tabel berdasarkan nama client
+                    $client_name = $client['name'];
+                    if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                        $tabel = 'allianz';
+                    } elseif ($client_name == 'PT. MSIG Insurance Life') {
+                        $tabel = 'msig';
+                    } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                        $tabel = 'generali';
+                    } else {
+                        die('client_name tidak ditemukan');
+                    }
+
+                    // Ambil periode dari tabel document berdasarkan ID
+                    $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                    $periode_result = mysqli_query($koneksi, $periode_sql);
+                    $periode = mysqli_fetch_array($periode_result)['periode'] ?? null;
+
+                    // Cek apakah periode diambil dengan benar
+                    if ($periode === null) {
+                        die("Periode tidak ditemukan untuk ID: $id");
+                    }
+
+                    // Proses periode menjadi array bulan
+                    $bulan_periode = !empty($periode) ? explode(' - ', $periode) : [];
+                    $bulanKondisi = "'" . implode("', '", $bulan_periode) . "'";  // Siapkan kondisi bulan untuk query
+
+                    // Query untuk mengambil data hanya dalam periode yang ditentukan
+                    $sql = "SELECT * FROM $tabel WHERE `Date Month` IN ($bulanKondisi)";
                     $result = mysqli_query($koneksi, $sql);
+
+                    // Cek hasil query
+                    if (!$result) {
+                        die('Query error: ' . mysqli_error($koneksi));
+                    }
 
                     // Inisialisasi variabel
                     $result_counts = [];
@@ -1793,19 +1994,23 @@ LIMIT 1";
                     $result_list = generateResultList($result_counts);
                     ?>
 
+
                     <li>Berdasarkan hasil investigasi, dari total pengajuan klaim, terdapat
                         <?php echo $result_list; ?>.
-                        Sehingga total ada <?php echo $total_temuan; ?> temuan yang dapat dijadikan sebagai dasar
+                        Sehingga total ada <?php echo $total_temuan; ?> temuan yang dapat dijadikan sebagai
+                        dasar
                         penolakan klaim
                         (atau sekitar <?php echo number_format($percentage_temuan, 2); ?>% dari total kasus yang
                         dilakukan investigasi).</li>
 
                     <li>Dari total uang pertanggungan polis <strong>Rp</strong>
                         <strong><?php echo number_format($total_polis, 0, ',', '.'); ?></strong>
-                        yang berhasil diselamatkan dari proses investigasi atas <?php echo $total_kasus; ?> kasus
+                        yang berhasil diselamatkan dari proses investigasi atas <?php echo $total_kasus; ?>
+                        kasus
                         tersebut adalah sebesar
                         <strong>Rp <?php echo number_format($total_diselamatkan, 0, ',', '.'); ?>
-                            (atau <?php echo number_format($percentage_diselamatkan, 2); ?>% dari total kasus yang
+                            (atau <?php echo number_format($percentage_diselamatkan, 2); ?>% dari total kasus
+                            yang
                             dilakukan investigasi).</strong>
                     </li>
                 </ol>
@@ -1855,7 +2060,7 @@ LIMIT 1";
                         $counter++;
                     }
                 } else {
-                    echo "<p>Tidak ada kesimpulan yang ditemukan.</p>";
+                    echo "";
                 }
                 ?>
                 <p>&nbsp;</p>
@@ -1866,7 +2071,8 @@ LIMIT 1";
                 <p>REKOMENDASI</p>
                 <p><strong>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</strong>
                 </p>
-                <p><strong>Bahwa berdasarkan kesimpulan akhir yang telah kami sampaikan sebelumnya, maka berikut ini
+                <p><strong>Bahwa berdasarkan kesimpulan akhir yang telah kami sampaikan sebelumnya, maka berikut
+                        ini
                         kami
                         sampaikan rekomendasi yang dapat diambil lebih lanjut:</strong></p>
                 <?php
@@ -1881,7 +2087,7 @@ LIMIT 1";
                         $counter++;
                     }
                 } else {
-                    echo "<p>Tidak ada rekomendasi yang ditemukan.</p>";
+                    echo "";
                 }
                 ?>
 

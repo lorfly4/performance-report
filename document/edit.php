@@ -111,12 +111,19 @@ if (!$client) {
             </select>
         </div>
         </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">periode </label>
-            <input type="text" class="form-control" name="Periode" autocomplete="off"
-                value="<?php echo $d['periode']; ?>">
-
-        </div>
+        <td>Periode</td>
+        <td>
+            <select id="period" name="periode" value="<?php echo $d['periode']; ?>">
+                <option <?php if ($d['periode'] == 'January - February - March') echo 'selected'; ?>
+                    value="January - February - March">January - February - March</option>
+                <option <?php if ($d['periode'] == 'April - May - June') echo 'selected'; ?> value="April - May - June">
+                    April - May - June</option>
+                <option <?php if ($d['periode'] == 'July - August - September') echo 'selected'; ?>
+                    value="July - August - September">July - August - September</option>
+                <option <?php if ($d['periode'] == 'October - November - December') echo 'selected'; ?>
+                    value="October - November - December">October - November - December</option>
+            </select>
+        </td>
         <div class="form-group">
             <label for="exampleInputEmail1">customer address</label>
             <input type="text" class="form-control" name="tanggal" autocomplete="off"

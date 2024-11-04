@@ -81,13 +81,14 @@
                                         <tr>
                                             <td>Periode</td>
                                             <td> <select id="period" name="periode">
-                                                    <option value="Januari - Febuari - Maret">Januari - Febuari - Maret
+                                                    <option value="January - February - March">January - February -
+                                                        March
                                                     </option>
-                                                    <option value="April - Mei - Juni">April - Mei - June</option>
-                                                    <option value="Juli - Agustus - September">Juli - Agustus -
+                                                    <option value="April - May - June">April - May - June</option>
+                                                    <option value="July - August - September">July - August -
                                                         September</option>
-                                                    <option value="Oktober - November - Desember">Oktober - November -
-                                                        Desember</option>
+                                                    <option value="October - November - December">October - November -
+                                                        December</option>
                                                 </select>
                                             </td>
                                             </td>

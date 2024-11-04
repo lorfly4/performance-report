@@ -12,22 +12,21 @@ if (isset($_POST['ubahdata'])) {
     $sql_d = "UPDATE document SET 
                 client_id='$client_id', 
                 periode='$periode', 
-                tanggal='$tanggal',  
+                tanggal='$tanggal'
               WHERE id='$id'";
-              
+
     $data = mysqli_query($koneksi, $sql_d);
-    
+
     if ($data) {
         echo "<script>
-                alert('Ubah Data Dengan ID = ".$id." Berhasil');
-                window.location.href = 'inde.php';
+                alert('Ubah Data Dengan ID = " . $id . " Berhasil');
+                window.location.href = 'index.php';
               </script>";
     } else {
         echo "Maaf, Terjadi kesalahan saat mencoba untuk menyimpan data ke database.";
         echo "Error: " . mysqli_error($koneksi);
-        echo "<br><a href=\"edit.php?id=".$id."\"> Kembali Ke Form !</a>";
+        echo "<br><a href=\"edit.php?id=" . $id . "\"> Kembali Ke Form !</a>";
     }
-    
+
     mysqli_close($koneksi);
 }
-?>

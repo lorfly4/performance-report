@@ -1,14 +1,15 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <?php
 // Include file koneksi ke database
 include 'koneksi.php'; // Pastikan file ini ada dan berfungsi dengan baik
 
-    // Cek apakah file CSV diunggah
+// Cek apakah file CSV diunggah
 if (isset($_POST['upload'])) {
     // Periksa apakah file CSV diunggah
     if (isset($_FILES['file_csv']) && $_FILES['file_csv']['error'] == 0) {
         $file_name = $_FILES['file_csv']['name'];
         $table_name = '';
-        
+
         // Cek apakah nama file CSV mengandung kata-kata tertentu
         if (strpos($file_name, 'allianz') !== false) {
             $table_name = 'allianz';
@@ -20,14 +21,14 @@ if (isset($_POST['upload'])) {
             echo "Gagal mengunggah file CSV. Nama file tidak mengandung kata-kata yang diharapkan.";
             exit;
         }
-        
+
         // Buka file CSV
         $file_tmp = $_FILES['file_csv']['tmp_name'];
         if (($handle = fopen($file_tmp, "r")) !== FALSE) {
-            // 4. Lewati header (baris pertama)
+            // Lewati header (baris pertama)
             fgetcsv($handle);
-            
-            // 5. Loop melalui setiap baris dalam CSV
+
+            // Loop melalui setiap baris dalam CSV
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 // Real escape string untuk setiap kolom
                 $no = $koneksi->real_escape_string($data[0]);
@@ -67,35 +68,42 @@ if (isset($_POST['upload'])) {
                 $qa_reporting = $koneksi->real_escape_string($data[34]);
                 $nomor_id = $koneksi->real_escape_string($data[35]);
                 $qa_investigator = $koneksi->real_escape_string($data[36]);
-        
-                // 6. Masukkan data ke tabel (ganti 'your_table_name' dengan nama tabel Anda)
-                $sql = "INSERT INTO $table_name (`No`, `Client Name`, `DateYear`, `Date Month`, `Nomor Polis`, `Insured Name`, `Area 1`, 
-                        `Area 2`, `Provinsi`, `Provinsi 2`, `Claim Type`, `Type Of Project`, `Investigator`, `Investigator 2`, 
-                        `Case Received`, `PO Received`, `Date Line Preliminary`, `Date Line Investigasi`, `TAT`, `UP`, 
-                        `Klaim Yang Diajukan`, `DOB Insured Name`, `Investigation Status`, `% Comp`, `Report Send`, 
-                        `Date Now`, `Result`, `Project Result`, `Result Detail`, `PIC`, `ON Going`, `TAT On Going`, 
-                        `TAT Completed`, `Temuan`, `QA Reporting`, `Nomor ID`, `QA Investigator`) 
-                        VALUES ('$no', '$client_name', '$date_year', '$date_month', '$nomor_polis', '$insured_name', '$area_1', 
-                                '$area_2', '$provinsi', '$provinsi_2', '$claim_type', '$type_of_project', '$investigator', 
-                                '$investigator_2', '$case_received', '$po_received', '$date_line_preliminary', 
-                                '$date_line_investigasi', '$tat', '$up', '$klaim_diajukan', '$dob_insured_name', 
-                                '$investigation_status', '$comp_percentage', '$report_send', '$date_now', '$result', 
-                                '$project_result', '$result_detail', '$pic', '$on_going', '$tat_on_going', '$tat_completed', 
-                                '$temuan', '$qa_reporting', '$nomor_id', '$qa_investigator')";
-        
-                // Jalankan query
-                if (!$koneksi->query($sql)) {
-                    echo "Error: " . $sql . "<br>" . $koneksi->error;
+
+                // Cek apakah data sudah ada di database
+                $checkQuery = "SELECT * FROM $table_name WHERE `No` = '$no' AND `Nomor Polis` = '$nomor_polis'";
+                $checkResult = $koneksi->query($checkQuery);
+
+                if ($checkResult->num_rows == 0) {
+                    // Masukkan data ke tabel
+                    $insertQuery = "INSERT INTO $table_name (`No`, `Client Name`, `DateYear`, `Date Month`, `Nomor Polis`, `Insured Name`, `Area 1`, 
+                            `Area 2`, `Provinsi`, `Provinsi 2`, `Claim Type`, `Type Of Project`, `Investigator`, `Investigator 2`, 
+                            `Case Received`, `PO Received`, `Date Line Preliminary`, `Date Line Investigasi`, `TAT`, `UP`, 
+                            `Klaim Yang Diajukan`, `DOB Insured Name`, `Investigation Status`, `% Comp`, `Report Send`, 
+                            `Date Now`, `Result`, `Project Result`, `Result Detail`, `PIC`, `ON Going`, `TAT On Going`, 
+                            `TAT Completed`, `Temuan`, `QA Reporting`, `Nomor ID`, `QA Investigator`) 
+                            VALUES ('$no', '$client_name', '$date_year', '$date_month', '$nomor_polis', '$insured_name', '$area_1', 
+                                    '$area_2', '$provinsi', '$provinsi_2', '$claim_type', '$type_of_project', '$investigator', 
+                                    '$investigator_2', '$case_received', '$po_received', '$date_line_preliminary', 
+                                    '$date_line_investigasi', '$tat', '$up', '$klaim_diajukan', '$dob_insured_name', 
+                                    '$investigation_status', '$comp_percentage', '$report_send', '$date_now', '$result', 
+                                    '$project_result', '$result_detail', '$pic', '$on_going', '$tat_on_going', '$tat_completed', 
+                                    '$temuan', '$qa_reporting', '$nomor_id', '$qa_investigator')";
+
+                    // Jalankan query
+                    $insertResult = $koneksi->query($insertQuery);
+                    if (!$insertResult) {
+                        echo "Gagal mengupload ke dalam database!<script>setTimeout(function(){ window.location.href = 'csv.php'; }, 2000);</script>";
+                    } else {
+                        echo "Data berhasil di upload!<script>setTimeout(function(){ window.location.href = 'dashboard.php'; }, 2000);</script>";
+                    }
                 }
             }
             // Tutup file setelah selesai
             fclose($handle);
-            echo "Data CSV berhasil diunggah!";
         } else {
             echo "Gagal membuka file CSV.";
         }
     } else {
         echo "Gagal mengunggah file CSV.";
     }
-    
 }
