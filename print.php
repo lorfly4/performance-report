@@ -200,8 +200,14 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
     <p><strong>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</strong>
     </p>
     <p>Wilayah Sebaran Investigasi</p>
-    <div><img src="./img/peta.png" alt=" " style="width: 93vw; height:  30vh;" /></div>
+    <?php
+    $query = "SELECT foto FROM document WHERE client_id = '$client_id' AND periode = '$periode' ORDER BY tanggal DESC LIMIT 1";
+    $result = mysqli_query($koneksi, $query);
+    $row = mysqli_fetch_assoc($result);
+    ?>
+    <div><img src="./img/<?php echo $row['foto']; ?>" alt=" " style="width: 93vw; height:  30vh;" /></div>
     <p>Jumlah kasus selesai Per Provinsi</p>
+
     <p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
     </p>
     <strong>
@@ -573,31 +579,35 @@ ORDER BY `Date Month` ASC";
         <ul>
             Penerimaan Case terbanyak adalah di bulan
             <?php
-            if ($date_month_terbanyak) {
-                // Periksa apakah 'Date Month' dan 'Total' ada
-                $date_month = $date_month_terbanyak['Date Month'];
-                if ($date_month) {
-                    echo date('F', strtotime($date_month));
-                } else {
-                    echo 'Data bulan tidak tersedia';
+            // Query untuk mendapatkan data tambahan (misalnya untuk nomor polis dan provinsi)
+            $sql_detail = "SELECT `Date Month`, `Nomor Polis`, `Provinsi`, `UP` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC"; // Ambil semua data yang diperlukan
+            $result_detail = mysqli_query($koneksi, $sql_detail);
+
+            // Memproses jumlah entri per bulan
+            $result_array = [];
+            $total_entries_all = 0; // Variabel untuk menghitung total entri
+
+            while ($item = mysqli_fetch_assoc($result_detail)) {
+                if (isset($item['Date Month'])) {
+                    // Menghitung total entri per bulan
+                    if (!isset($result_array[$item['Date Month']])) {
+                        $result_array[$item['Date Month']] = 0;
+                    }
+                    $result_array[$item['Date Month']] += 1; // Tambah 1 untuk setiap entri
+                    $total_entries_all++; // Menghitung total semua entri
                 }
-
-                echo ' dengan ' . number_format($date_month_terbanyak['Total'], 0, '.', ',') . ' polis';
-
-                // Menghitung persentase penerimaan terhadap total penerimaan
-                $percentage = ($date_month_terbanyak['Total'] / $total_insured_name_all) * 100;
-                echo ' atau ' . number_format($percentage, 1, '.', ',') . '%';
-
-                // Menampilkan tahun dari kolom 'dateyear' di database
-                if (isset($date_month_terbanyak['dateyear']) && !empty($date_month_terbanyak['dateyear'])) {
-                    echo ' dari total penerimaan polis di tahun ' . $date_month_terbanyak['dateyear'];
-                } else {
-                    echo ' dari total penerimaan polis di tahun tidak tersedia';
-                }
-            } else {
-                echo 'Data tidak tersedia.';
             }
-            ?>.
+
+            // Menemukan bulan dengan jumlah entri terbanyak
+            $max_date_month_terbanyak = array_keys($result_array, max($result_array))[0]; // Mendapatkan kunci (bulan) dengan nilai terbanyak
+            $max_total_entries = max($result_array); // Mendapatkan nilai terbanyak
+
+            // Menampilkan hasil
+            echo '<li>Bulan dengan jumlah polis terbanyak adalah ' . $max_date_month_terbanyak .
+                ' dengan total ' . number_format($max_total_entries, 0, ',', '.') . ' polis (' .
+                number_format(($max_total_entries / $total_entries_all) * 100, 1, '.', ',') .
+                '% dari total keseluruhan polis).</li>';
+            ?>
         </ul>
 
 
@@ -998,6 +1008,16 @@ ORDER BY `Date Month` ASC";
 
                 <!-- Bagian JavaScript untuk Chart -->
                 <?php
+                $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                $periode_result = mysqli_query($koneksi, $periode_sql);
+                $periode = mysqli_fetch_array($periode_result)['periode'];
+
+                // Pecah periode menjadi array berdasarkan tanda pemisah " - "
+                $bulanDipilih = explode(' - ', $periode);
+
+                // Buat klausa WHERE untuk Date Month berdasarkan bulan dalam $bulanDipilih
+                $bulanKondisi = "'" . implode("', '", $bulanDipilih) . "'";
+
                 // Query untuk mengambil kolom 'Claim Type' dan 'TAT' dari tabel
                 $sql = "SELECT `Claim Type`, `TAT` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $result = mysqli_query($koneksi, $sql);
@@ -1028,14 +1048,16 @@ ORDER BY `Date Month` ASC";
                 // Mendapatkan Claim Types untuk sumbu x
                 $claimTypes = array_keys($tatData);
 
-                // Menghitung rata-rata TAT untuk setiap Claim Type
+                // Menghitung rata-rata TAT untuk setiap Claim Type dengan pembulatan
                 $tatAchievementData = [];
                 foreach ($claimTypes as $claimType) {
-                    $tatAchievementData[] = ($tatCounts[$claimType] > 0) ? (int)($tatData[$claimType] / $tatCounts[$claimType]) : 0; // Rata-rata TAT per Claim Type sebagai integer
+                    $rataRataTat = $tatData[$claimType] / $tatCounts[$claimType]; // rata-rata TAT per Claim Type
+                    $bulatkan = (int)round($rataRataTat); // membulatkan ke atas jika >= 0.5
+                    $tatAchievementData[] = $bulatkan;
                 }
 
                 // Menghitung rata-rata keseluruhan untuk garis TAT Average
-                $averageTatAchievement = (count($tatAchievementData) > 0) ? (int)(array_sum($tatAchievementData) / count($tatAchievementData)) : 0;
+                $averageTatAchievement = (count($tatAchievementData) > 0) ? round(array_sum($tatAchievementData) / count($tatAchievementData)) : 0;
                 $tatAverageData = array_fill(0, count($claimTypes), $averageTatAchievement);
 
                 // Mengonversi data ke format JSON untuk digunakan di JavaScript
@@ -1043,6 +1065,7 @@ ORDER BY `Date Month` ASC";
                 $tatAchievementDataJSON = json_encode($tatAchievementData);
                 $tatAverageDataJSON = json_encode($tatAverageData);
                 ?>
+
 
                 <!-- Kode HTML dan JavaScript untuk Grafik -->
                 <script type="text/javascript">
@@ -1092,7 +1115,7 @@ ORDER BY `Date Month` ASC";
                         }, {
                             name: 'SLA',
                             type: 'line',
-                            data: [14, 14],
+                            data: <?php echo json_encode(array_fill(0, count(json_decode($claimTypesJSON)), 14)); ?>,
                             color: 'yellow',
                             dashStyle: 'Dash',
                             marker: {
@@ -1102,6 +1125,7 @@ ORDER BY `Date Month` ASC";
                     });
                 });
                 </script>
+
 
 
 
@@ -1118,8 +1142,18 @@ ORDER BY `Date Month` ASC";
                     die('client_name tidak ditemukan');
                 }
 
-                // Query untuk mendapatkan data TAT Completed dari tabel
-                $sql = "SELECT `TAT Completed` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
+                $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                $periode_result = mysqli_query($koneksi, $periode_sql);
+                $periode = mysqli_fetch_array($periode_result)['periode'];
+
+                // Pecah periode menjadi array berdasarkan tanda pemisah " - "
+                $bulanDipilih = explode(' - ', $periode);
+
+                // Buat klausa WHERE untuk `Date Month` berdasarkan bulan dalam $bulanDipilih
+                $bulanKondisi = "'" . implode("', '", $bulanDipilih) . "'";
+
+                // Query untuk mendapatkan data TAT dari tabel
+                $sql = "SELECT `TAT` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                 $result = mysqli_query($koneksi, $sql);
                 if (!$result) {
                     die('Query error: ' . mysqli_error($koneksi));
@@ -1128,17 +1162,17 @@ ORDER BY `Date Month` ASC";
                 // Inisialisasi variabel untuk menghitung jumlah kategori
                 $under14Days = 0;
                 $over14Days = 0;
-                $totalCount = 0; // Untuk menghitung jumlah total TAT Completed
+                $totalCount = 0; // Untuk menghitung jumlah total TAT
 
-                // Loop untuk memisahkan data kategori berdasarkan nilai TAT Completed
+                // Loop untuk memisahkan data kategori berdasarkan nilai TAT
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $tatCompleted = $row['TAT Completed']; // Ambil nilai TAT Completed
+                    $tat = (int)$row['TAT']; // Ambil nilai TAT dan konversi ke integer
                     $totalCount++; // Menambah total count
 
-                    // Menambahkan ke kategori berdasarkan nilai 'TAT Completed'
-                    if ($tatCompleted === 'Under 14 Days') {
+                    // Menambahkan ke kategori berdasarkan nilai TAT
+                    if ($tat <= 14) {
                         $under14Days++;
-                    } elseif ($tatCompleted === 'Over 14 Days') {
+                    } else {
                         $over14Days++;
                     }
                 }
@@ -1148,7 +1182,7 @@ ORDER BY `Date Month` ASC";
                 $averageSLAData = array_fill(0, 2, $averageSLA); // Mengisi nilai rata-rata SLA untuk setiap kategori
 
                 // Menyusun data untuk chart
-                $categories = ['14 days', 'More than 14 days'];
+                $categories = ['Under 14 Days', 'More than 14 Days'];
                 $dataChart = [$under14Days, $over14Days];
 
                 // Mengonversi data ke format JSON untuk digunakan di JavaScript
@@ -1203,40 +1237,48 @@ ORDER BY `Date Month` ASC";
                     </thead>
                     <tbody>
                         <?php
-                        // Query untuk mengambil semua data dari tabel
-                        $sql = "SELECT `TAT Completed` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
+                        $periode_sql = "SELECT periode FROM document WHERE id = $id";
+                        $periode_result = mysqli_query($koneksi, $periode_sql);
+                        $periode = mysqli_fetch_array($periode_result)['periode'];
+
+                        // Pecah periode menjadi array berdasarkan tanda pemisah " - "
+                        $bulanDipilih = explode(' - ', $periode);
+
+                        // Buat klausa WHERE untuk `Date Month` berdasarkan bulan dalam $bulanDipilih
+                        $bulanKondisi = "'" . implode("', '", $bulanDipilih) . "'";
+
+                        // Query to select data based on your conditions from the specified table
+                        $sql = "SELECT `TAT` FROM $tabel WHERE `Date Month` IN ($bulanKondisi) ORDER BY `Date Month` ASC";
                         $result = mysqli_query($koneksi, $sql);
 
                         if (!$result) {
                             die('Query error: ' . mysqli_error($koneksi));
                         }
 
-                        // Variabel untuk menghitung jumlah kasus dan total hari
+                        // Variables to count cases and total days for each category
                         $under14DaysCount = 0;
                         $over14DaysCount = 0;
-                        $totalTATCompleted = 0;
                         $totalDaysUnder14 = 0;
                         $totalDaysOver14 = 0;
 
-                        // Iterasi untuk menghitung data sesuai kriteria
+                        // Loop to count and sum days based on criteria
                         while ($row = mysqli_fetch_assoc($result)) {
-                            $tatCompleted = $row['TAT Completed'];
-                            $totalTATCompleted++;
-
-                            if ($tatCompleted === 'Under 14 Days') {
+                            $tat = $row['TAT'];
+                            if ($tat <= 14) {
                                 $under14DaysCount++;
-                                $totalDaysUnder14 += 14; // Mengasumsikan 14 hari untuk setiap kasus 'Under 14 Days'
-                            } elseif ($tatCompleted === 'Over 14 Days') {
+                                $totalDaysUnder14 += $tat;
+                            } else {
                                 $over14DaysCount++;
-                                $totalDaysOver14 += 15; // Menambahkan nilai hari untuk 'Over 14 Days' (dapat disesuaikan)
+                                $totalDaysOver14 += $tat;
                             }
                         }
 
-                        // Hitung rata-rata hari untuk "Under 14 Days" dan "Over 14 Days"
+                        // Calculate averages
                         $under14DaysAverage = ($under14DaysCount > 0) ? round($totalDaysUnder14 / $under14DaysCount) : 0;
                         $over14DaysAverage = ($over14DaysCount > 0) ? round($totalDaysOver14 / $over14DaysCount) : 0;
                         ?>
 
+                        <!-- Table rows for each TAT category -->
                         <tr>
                             <td>Under 14 Days</td>
                             <td><?php echo $under14DaysCount; ?></td>
@@ -1250,15 +1292,16 @@ ORDER BY `Date Month` ASC";
                     </tbody>
                 </table>
 
+
                 <p><strong>Analisa:</strong></p>
                 <?php
                 // Tentukan tabel berdasarkan client name
                 $client_name = $client['name'];
                 if ($client_name == 'PT Asuransi Allianz Indonesia') {
                     $tabel = 'allianz';
-                } else if ($client_name == 'PT. MSIG Insurance Life') {
+                } elseif ($client_name == 'PT. MSIG Insurance Life') {
                     $tabel = 'msig';
-                } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
                     $tabel = 'generali';
                 } else {
                     die('client_name tidak ditemukan');
@@ -1276,7 +1319,9 @@ ORDER BY `Date Month` ASC";
                 $total_polis = $row_polis_count['total_polis'];
 
                 // Query to calculate average TAT per claim type
-                $sql = "SELECT `Claim Type`, AVG(tat) AS avg_tat FROM $tabel GROUP BY `Claim Type`";
+                $sql = "SELECT `Date Month`, `Claim Type`, AVG(TAT) AS avg_tat 
+        FROM $tabel WHERE `Date Month` IN ($bulanKondisi) 
+        GROUP BY `Date Month`, `Claim Type`";
                 $result = mysqli_query($koneksi, $sql);
 
                 if (!$result) {
@@ -1284,43 +1329,56 @@ ORDER BY `Date Month` ASC";
                 }
 
                 // Initialize variables to store TAT values
-                $tat_data = [
-                    'CI' => 0,
-                    'DC' => 0,
-                    'HS' => 0,
-                    'TPD' => 0
-                ];
+                $tat_data = [];
 
                 // Fetch data and assign it to the respective claim type
                 while ($row = mysqli_fetch_assoc($result)) {
-                    switch ($row['Claim Type']) {
-                        case 'CI':
-                            $tat_data['CI'] = round($row['avg_tat']);
-                            break;
-                        case 'DC':
-                            $tat_data['DC'] = round($row['avg_tat']);
-                            break;
-                        case 'HS':
-                            $tat_data['HS'] = round($row['avg_tat']);
-                            break;
-                        case 'TPD':
-                            $tat_data['TPD'] = round($row['avg_tat']);
-                            break;
+                    $date_month = $row['Date Month'];
+                    $claim_type = $row['Claim Type'];
+                    $avg_tat = round($row['avg_tat']);
+
+                    if (!isset($tat_data[$date_month])) {
+                        $tat_data[$date_month] = [
+                            'CI' => null,
+                            'DC' => null,
+                            'HS' => null,
+                            'TPD' => null
+                        ];
                     }
+
+                    // Assign the average TAT to the correct claim type
+                    $tat_data[$date_month][$claim_type] = $avg_tat;
                 }
                 ?>
-
-                <!-- Display data in HTML as requested -->
                 <ol>
-                    <li>Rata-rata TAT untuk <?php echo $total_polis; ?> polis adalah selama
-                        <?php echo round(array_sum($tat_data) / 4); ?> hari kalender sebagai berikut:</li>
+                    <li>Periode: <?php echo implode(', ', $bulanDipilih); ?></li>
+                    <li>Rata-rata TAT untuk <?php echo $total_polis; ?> polis adalah sebagai berikut:</li>
                 </ol>
                 <ul>
-                    <li>Klaim critical illness (CI) selama <?php echo $tat_data['CI']; ?> hari kalender.</li>
-                    <li>Klaim meninggal (DC) selama <?php echo $tat_data['DC']; ?> hari kalender.</li>
-                    <li>Klaim HS (Hospital) selama <?php echo $tat_data['HS']; ?> hari kalender.</li>
-                    <li>Klaim TPD selama <?php echo $tat_data['TPD']; ?> hari kalender.</li>
+                    <?php foreach ($tat_data as $date_month => $claim_types) : ?>
+                    <?php
+                        // Check if there's any non-null value in $claim_types
+                        if (array_filter($claim_types)) :
+                        ?>
+                    <li><?php echo $date_month; ?>:</li>
+                    <ul>
+                        <?php if ($claim_types['CI'] !== null) : ?>
+                        <li>Klaim critical illness (CI) selama <?php echo $claim_types['CI']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                        <?php if ($claim_types['DC'] !== null) : ?>
+                        <li>Klaim meninggal (DC) selama <?php echo $claim_types['DC']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                        <?php if ($claim_types['HS'] !== null) : ?>
+                        <li>Klaim HS (Hospital) selama <?php echo $claim_types['HS']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                        <?php if ($claim_types['TPD'] !== null) : ?>
+                        <li>Klaim TPD selama <?php echo $claim_types['TPD']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                    </ul>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
+
 
                 <p>&nbsp;</p>
 
@@ -1868,6 +1926,11 @@ ORDER BY `Date Month` ASC";
                         if (!$result) {
                             die('Query error: ' . mysqli_error($koneksi));
                         }
+                        $remarks_result = mysqli_query($koneksi, "SELECT * FROM remarks");
+                        $remarks = [];
+                        while ($row = mysqli_fetch_assoc($remarks_result)) {
+                            $remarks[$row['result_type']] = $row['remark'];
+                        }
 
                         // Initialize arrays to hold total UP for each result type
                         $total_up_by_result = [];
@@ -1890,7 +1953,7 @@ ORDER BY `Date Month` ASC";
                                 $total_up_all += $total_up; // Total UP for all results
 
                                 // Get the result type
-                                $result_type = strtolower(trim($value['Result']));
+                                $result_type = trim($value['Result']); // Removed strtolower
 
                                 // Initialize the result type if not already done
                                 if (!isset($total_up_by_result[$result_type])) {
@@ -1902,23 +1965,30 @@ ORDER BY `Date Month` ASC";
                             }
                         }
 
-                        // Display the table with the calculated UP for each result type
-                        foreach ($total_up_by_result as $result_type => $total_up) {
-                            // Calculate percentage for this result type
-                            if ($total_up_all > 0) {
-                                $percentage = ($total_up / $total_up_all) * 100;
-                            } else {
-                                $percentage = 0;
-                            }
+                        // Display the table with the calculated UP for each result type in specified order
+                        $result_order = ['PEC', 'Fraud', 'Financial background', 'No Finding', 'Re Underwriting'];
+                        foreach ($result_order as $result_type) {
+                            if (isset($total_up_by_result[$result_type])) {
+                                $total_up = $total_up_by_result[$result_type];
+                                // Calculate percentage for this result type
+                                if ($total_up_all > 0) {
+                                    $percentage = ($total_up / $total_up_all) * 100;
+                                } else {
+                                    $percentage = 0;
+                                }
 
-                            echo '<tr>';
-                            echo '<td>' . ucfirst($result_type) . '</td>'; // Display result type
-                            echo '<td>' . number_format($total_up, 0, ',', '.') . '</td>'; // Total UP for this result type
-                            echo '<td>' . number_format($percentage, 2, '.', ',') . '%</td>'; // Percentage
-                            echo '<td><span style="white-space: nowrap;">' . number_format($total_up_all, 0, ',', '.') . '</span></td>'; // Total UP
-                            echo '<td>' . number_format(100, 2, '.', ',') . '%</td>'; // Total UP percentage
-                            echo '<td>UP yang berhasil diselamatkan</td>';
-                            echo '</tr>';
+                                echo '<tr>';
+                                echo '<td>' . ucfirst($result_type) . '</td>';
+                                echo '<td>' . number_format($total_up, 0, ',', '.') . '</td>';
+                                echo '<td>' . number_format($percentage, 2, '.', ',') . '%</td>';
+                                echo '<td><span style="white-space: nowrap;">' . number_format($total_up_all, 0, ',', '.') . '</span></td>';
+                                echo '<td>' . number_format(100, 2, '.', ',') . '%</td>';
+
+                                // Ambil remark dari array $remarks berdasarkan result_type, jika tidak ada tampilkan default
+                                $remark = $remarks[$result_type] ?? 'Remark tidak tersedia';
+                                echo '<td>' . $remark . '</td>';
+                                echo '</tr>';
+                            }
                         }
                         ?>
 

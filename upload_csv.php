@@ -1,3 +1,4 @@
+<button><a href="csv.php">back</a></button>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <?php
 // Include file koneksi ke database
@@ -92,9 +93,9 @@ if (isset($_POST['upload'])) {
                     // Jalankan query
                     $insertResult = $koneksi->query($insertQuery);
                     if (!$insertResult) {
-                        echo "Gagal mengupload ke dalam database!<script>setTimeout(function(){ window.location.href = 'csv.php'; }, 2000);</script>";
+                        echo "Gagal mengupload ke dalam database!<script>setTimeout(function(){ window.location.href = 'csv.php'; }, 5000);</script>";
                     } else {
-                        echo "Data berhasil di upload!<script>setTimeout(function(){ window.location.href = 'dashboard.php'; }, 2000);</script>";
+                        echo "Data berhasil di upload!<script>setTimeout(function(){ window.location.href = 'dashboard.php'; }, 5000);</script>";
                     }
                 }
             }

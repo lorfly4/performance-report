@@ -80,7 +80,6 @@ th {
                                             <td>
 
                                                 <input type="text" class="form-control" name="name" autocomplete="off">
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -105,27 +104,26 @@ th {
                 </div>
             </div>
         </div>
-        <?php 
-                        include '../koneksi.php';
-                        $query1 = "SELECT * FROM client ORDER BY id";
+        <?php
+        include '../koneksi.php';
+        $query1 = "SELECT * FROM client ORDER BY id";
 
-                        $pola = 'asc';
-                        $polabaru = 'asc';
+        $pola = 'asc';
+        $polabaru = 'asc';
 
-                        if (isset($_GET['orderby'])) {
-                            $orderby = $_GET['orderby'];
-                            $pola = $_GET['pola'];
+        if (isset($_GET['orderby'])) {
+            $orderby = $_GET['orderby'];
+            $pola = $_GET['pola'];
 
-                        $query1 = "SELECT * FROM client ORDER BY $orderby $pola";
-                        mysqli_query($koneksi, $query1);
-                        if ($pola=='asc') {
-                            $polabaru = 'desc';
-                        }else{
-                            $polabaru = 'asc';
-                        }
-
-                        }
-                         ?>
+            $query1 = "SELECT * FROM client ORDER BY $orderby $pola";
+            mysqli_query($koneksi, $query1);
+            if ($pola == 'asc') {
+                $polabaru = 'desc';
+            } else {
+                $polabaru = 'asc';
+            }
+        }
+        ?>
         <div class="table-responsive table--no-card m-b-30 mt-3">
             <table class="table table-borderless table-striped table-earning">
                 <thead>
@@ -136,38 +134,42 @@ th {
 
                     </tr>
                 </thead>
-                <?php 
-                                        
+                <?php
 
-                                        $no = 1;
-                                      
-                                            
-                                        
-                                     ?>
+
+                $no = 1;
+
+
+
+                ?>
                 <tbody>
 
-                    <?php 
-                                       $no++;
-                                         include 'paging_client.php';
+                    <?php
+                    $no++;
+                    include 'paging_client.php';
 
-                                        ?>
+                    ?>
                 </tbody>
             </table>
 
         </div>
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" <?php if($halaman > 1){ echo "href='?halaman=$Previous'"; } ?>>Previous</a>
+                <a class="page-link" <?php if ($halaman > 1) {
+                                            echo "href='?halaman=$Previous'";
+                                        } ?>>Previous</a>
             </li>
-            <?php 
-                for($x=1;$x<=$total_halaman;$x++){
-                    ?>
+            <?php
+            for ($x = 1; $x <= $total_halaman; $x++) {
+            ?>
             <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
             <?php
-                }
-                ?>
+            }
+            ?>
             <li class="page-item">
-                <a class="page-link" <?php if($halaman < $total_halaman) { echo "href='?halaman=$next'"; } ?>>Next</a>
+                <a class="page-link" <?php if ($halaman < $total_halaman) {
+                                            echo "href='?halaman=$next'";
+                                        } ?>>Next</a>
             </li>
         </ul>
     </main>

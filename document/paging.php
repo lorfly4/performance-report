@@ -68,8 +68,13 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Action
+                                free text
                             </button>
+
+
+
+
+
 
 
                             <ul class="dropdown-menu">
@@ -96,9 +101,60 @@
                                         Remarks</a></li>
                             </ul>
                         </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                free text
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"
+                                        href="hapus_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        hapus remarks</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        remarks</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_analisa_top.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        analisa top 3 wilayah</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_analisa_top.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        analisa top 3 wilayah</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_analisa_tat.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        analisa turn around time</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_analisa_tat.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        analisa turn around time</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_analisa_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        analisa hasil investigasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_analisa_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        analisa hasil investigasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_analisa_sebaran_wilayah_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        analisa wilayah sebaran hasil investigasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_analisa_sebaran_wilayah_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        analisa wilayah sebaran hasil investigasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        Rekomendasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        Rekomendasi</a></li>
+                                <li><a class="dropdown-item"
+                                        href="edit_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        Kesimpulan</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        Kesimpulan</a></li>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     <tr>
         <?php

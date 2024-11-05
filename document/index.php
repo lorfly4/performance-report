@@ -100,6 +100,12 @@
                                             </td>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>Upload Gambar</td>
+                                            <td><input type="file" class="form-control" name="gambar">
+                                            </td>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
