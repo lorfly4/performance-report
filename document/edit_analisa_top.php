@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -55,6 +54,8 @@
             <div class="form-group">
                 <label for="keterangan">Analisa Top 3 wilayah</label>
                 <?php
+                include "../koneksi.php";
+                $id = $_GET['id'];
                 $query = "SELECT * FROM analisa_top_wilayah WHERE id = '$id'";
                 $result = mysqli_query($koneksi, $query);
                 $data = mysqli_fetch_assoc($result);
@@ -102,7 +103,7 @@ if (isset($_POST['analisa_top'])) {
                 icon: "error",
                 button: "OK",
             }).then(function() {
-                window.location.href = "edit_analisa_top.php?id=' . $id . '";
+                window.location.href = "analisa_top.php?id=' . $id . '";
             });
         </script>';
     }

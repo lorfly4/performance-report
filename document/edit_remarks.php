@@ -91,10 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<script>
             swal({
                 title: "Berhasil!",
-                text: "Remark berhasil diupdate!",
+                text: "Analisa Hasil Investigasi berhasil diupdate",
                 icon: "success",
-                button: false,
-                timer: 3000
+                button: "OK",
             }).then(function() {
                 window.location.href = "index.php";
             });
@@ -103,13 +102,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
         echo '<script>
             swal({
-                title: "Error!",
-                text: "Error: ' . $stmt->error . '",
+                title: "Gagal!",
+                text: "Analisa Hasil Investigasi gagal diupdate",
                 icon: "error",
-                button: false,
-                timer: 3000
+                button: "OK",
             }).then(function() {
-                window.location.href = "index.php";
+                window.location.href = "edit_remarks.php?id=' . $id . '";
             });
         </script>';
     }

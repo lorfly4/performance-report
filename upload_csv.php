@@ -93,9 +93,9 @@ if (isset($_POST['upload'])) {
                     // Jalankan query
                     $insertResult = $koneksi->query($insertQuery);
                     if (!$insertResult) {
-                        echo "Gagal mengupload ke dalam database!<script>setTimeout(function(){ window.location.href = 'csv.php'; }, 5000);</script>";
+                        echo "Gagal mengupload ke dalam database!";
                     } else {
-                        echo "Data berhasil di upload!<script>setTimeout(function(){ window.location.href = 'dashboard.php'; }, 5000);</script>";
+                        echo "Data berhasil di upload!";
                     }
                 }
             }

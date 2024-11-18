@@ -11,27 +11,27 @@
 <body>
 
     <?php
-    include '../koneksi.php';
+        include '../koneksi.php';
 
-    $no = 1;
-    $batas = 10;
-    $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
-    $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
+        $no = 1;
+        $batas = 10;
+        $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+        $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
-    $data = mysqli_query($koneksi, "SELECT * FROM document");
-    $jumlah_data = mysqli_num_rows($data);
-    $total_halaman = ceil($jumlah_data / $batas);
+        $data = mysqli_query($koneksi, "SELECT * FROM document");
+        $jumlah_data = mysqli_num_rows($data);
+        $total_halaman = ceil($jumlah_data / $batas);
 
-    $data_user = mysqli_query($koneksi, "SELECT * FROM document LIMIT $halaman_awal, $batas");
-    while ($d = mysqli_fetch_array($data_user)) {
-    ?>
+        $data_user = mysqli_query($koneksi, "SELECT * FROM document LIMIT $halaman_awal, $batas");
+        while ($d = mysqli_fetch_array($data_user)) {
+        ?>
     <tr>
         <td style="text-align: center;"><?php echo $no++; ?></td>
         <?php
-            $sql = "SELECT name FROM client WHERE id = '" . $d['client_id'] . "'";
-            $result = mysqli_query($koneksi, $sql);
-            $row = mysqli_fetch_row($result);
-            ?>
+                        $sql = "SELECT name FROM client WHERE id = '" . $d['client_id'] . "'";
+                        $result = mysqli_query($koneksi, $sql);
+                        $row = mysqli_fetch_row($result);
+                        ?>
         <td style="text-align: center;"><?php echo htmlspecialchars($row[0]); ?></td>
         <td style="text-align: center;">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -91,11 +91,11 @@
                                         href="analisa_sebaran_wilayah_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Input
                                         analisa wilayah sebaran hasil investigasi</a></li>
                                 <li><a class="dropdown-item"
-                                        href="input_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Input
-                                        Rekomendasi</a></li>
-                                <li><a class="dropdown-item"
                                         href="input_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">Input
                                         Kesimpulan</a></li>
+                                <li><a class="dropdown-item"
+                                        href="input_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Input
+                                        Rekomendasi</a></li>
                                 <li><a class="dropdown-item"
                                         href="input_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">Input
                                         Remarks</a></li>
@@ -108,12 +108,6 @@
                             </button>
 
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"
-                                        href="hapus_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
-                                        hapus remarks</a></li>
-                                <li><a class="dropdown-item"
-                                        href="edit_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
-                                        remarks</a></li>
                                 <li><a class="dropdown-item"
                                         href="edit_analisa_top.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
                                         analisa top 3 wilayah</a></li>
@@ -139,17 +133,23 @@
                                         href="delete_analisa_sebaran_wilayah_hasil_investigasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
                                         analisa wilayah sebaran hasil investigasi</a></li>
                                 <li><a class="dropdown-item"
+                                        href="edit_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        Kesimpulan</a></li>
+                                <li><a class="dropdown-item"
+                                        href="delete_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        Kesimpulan</a></li>
+                                <li><a class="dropdown-item"
                                         href="edit_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
                                         Rekomendasi</a></li>
                                 <li><a class="dropdown-item"
                                         href="delete_rekomendasi.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
                                         Rekomendasi</a></li>
                                 <li><a class="dropdown-item"
-                                        href="edit_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
-                                        Kesimpulan</a></li>
+                                        href="hapus_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
+                                        hapus remarks</a></li>
                                 <li><a class="dropdown-item"
-                                        href="delete_kesimpulan.php?id=<?php echo htmlspecialchars($d['id']); ?>">Delete
-                                        Kesimpulan</a></li>
+                                        href="edit_remarks.php?id=<?php echo htmlspecialchars($d['id']); ?>">edit
+                                        remarks</a></li>
                         </div>
                     </div>
                 </div>
@@ -158,8 +158,8 @@
         </div>
     <tr>
         <?php
-    }
-        ?>
+        }
+                ?>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>

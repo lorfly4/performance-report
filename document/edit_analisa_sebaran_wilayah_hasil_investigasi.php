@@ -1,10 +1,21 @@
+<?php
+include "../koneksi.php";
+if (!isset($_GET['id'])) {
+    die("ID tidak ditemukan. <a href='index.php'>Kembali</a>");
+}
+
+$id = $_GET['id'];
+$query = "SELECT * FROM analisa_sebaran_wilayah_hasil_investigasi WHERE id = '$id'";
+$result = mysqli_query($koneksi, $query);
+$analisa = mysqli_fetch_assoc($result);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Rekomendasi Report</title>
+    <title>Edit Analisa Report</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
@@ -32,8 +43,8 @@
     }
 
     .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
+        background-color: #dc3545;
+        border-color: #dc3545;
     }
 
     textarea {
@@ -45,20 +56,16 @@
 
 <body>
     <div class="container">
-        <h2 class="text-center">Input Rekomendasi Report</h2>
+        <h2 class="text-center">Edit Analisa Report</h2>
         <form method="post">
             <div class="form-group">
-                <input type="hidden" name="id"
-                    value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="result_type">result_type</label>
-                <input class="form-control" type="text" name="result_type">
+                <input type="hidden" name="id" value="<?php echo $analisa['id']; ?>">
             </div>
 
             <div class="form-group">
-                <label for="remarks">remarks</label>
-                <input class="form-control" id="remarks" rows="6" name="remarks">
+                <label for="analisa">Analisa</label>
+                <textarea class="form-control" id="analisa" rows="6"
+                    name="analisa"><?php echo $analisa['analisa']; ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
@@ -68,22 +75,17 @@
 </html>
 
 <?php
-include '../koneksi.php';
+if (isset($_POST['analisa'])) {
+    $analisa = $_POST['analisa'];
+    $query = "UPDATE analisa_sebaran_wilayah_hasil_investigasi SET analisa = '$analisa' WHERE id = '$id'";
+    $result = mysqli_query($koneksi, $query);
 
-$id = $_GET['id'];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $result_type = $_POST['result_type'];
-    $remark = $_POST['remarks'];
-
-    $sql = "INSERT INTO remarks (id, result_type, remark) VALUES (?, ?, ?)";
-    $stmt = $koneksi->prepare($sql);
-    $stmt->bind_param("sss", $id, $result_type, $remark);
-    if ($stmt->execute()) {
+    if ($result) {
         echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
         echo '<script>
             swal({
                 title: "Berhasil!",
-                text: "Analisa Hasil Investigasi berhasil diupdate",
+                text: "Analisa berhasil diupdate",
                 icon: "success",
                 button: "OK",
             }).then(function() {
@@ -95,11 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<script>
             swal({
                 title: "Gagal!",
-                text: "Analisa Hasil Investigasi gagal diupdate",
+                text: "Analisa gagal diupdate",
                 icon: "error",
                 button: "OK",
             }).then(function() {
-                window.location.href = "input_remarks.php?id=' . $id . '";
+                window.location.href = "edit_analisa.php?id=' . $id . '";
             });
         </script>';
     }
