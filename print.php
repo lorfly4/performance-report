@@ -32,13 +32,14 @@ if (!$image) {
     die('Gambar tidak ditemukan untuk client_id ' . $client_id);
 }
 
-$client_name = $client['name'];
-if ($client_name == 'PT Asuransi Allianz Indonesia') {
+if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
     $tabel = 'allianz';
-} else if ($client_name == 'PT. MSIG Life Insurance') {
+} else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
     $tabel = 'msig';
-} else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+} else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
     $tabel = 'generali';
+} else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+    $tabel = 'bri';
 } else {
     die('client_name tidak ditemukan');
 }
@@ -67,101 +68,101 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
     <link rel="stylesheet" type="text/css" id="u1"
         href="https://id.rakko.tools/tools/129/lib/tinymce/skins/content/default/content.min.css" />
     <style>
-        * {
-            box-sizing: border-box;
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 1cm;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .gambar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        height: 30vh;
+        margin: auto;
+        background-color: #4285F4;
+        color: white;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    img {
+        width: 200px;
+        height: auto;
+    }
+
+    img,
+    iframe {
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media print {
+        @page {
+            size: potrait;
+            margin: 0;
         }
 
-        body {
-            margin: 1cm;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            -webkit-print-color-adjust: exact;
+        header,
+        footer {
+            display: none;
         }
+    }
 
-        .gambar {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+    .page-break {
+        page-break-before: always;
+    }
 
-        }
+    /* Memperbesar ukuran teks untuk paragraf dan daftar */
+    p {
+        font-size: 12pt;
+        /* Ukuran teks untuk paragraf */
+        line-height: 1.3;
+        /* Memberikan jarak antar baris agar lebih nyaman dibaca */
+    }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 80%;
-            height: 30vh;
-            margin: auto;
-            background-color: #4285F4;
-            color: white;
-            text-align: center;
-            box-sizing: border-box;
-        }
+    ol {
+        font-size: 12pt;
+        /* Ukuran teks untuk daftar berurutan */
+        line-height: 1.3;
+        /* Memberikan jarak antar item dalam daftar */
+    }
 
-        img {
-            width: 200px;
-            height: auto;
-        }
+    strong {
+        font-size: 12pt;
+        /* Memperbesar teks bold */
+    }
 
-        img,
-        iframe {
-            max-width: 100%;
-            height: auto;
-        }
-
-        @media print {
-            @page {
-                size: potrait;
-                margin: 0;
-            }
-
-            header,
-            footer {
-                display: none;
-            }
-        }
-
-        .page-break {
-            page-break-before: always;
-        }
-
-        /* Memperbesar ukuran teks untuk paragraf dan daftar */
-        p {
-            font-size: 12pt;
-            /* Ukuran teks untuk paragraf */
-            line-height: 1.3;
-            /* Memberikan jarak antar baris agar lebih nyaman dibaca */
-        }
-
-        ol {
-            font-size: 12pt;
-            /* Ukuran teks untuk daftar berurutan */
-            line-height: 1.3;
-            /* Memberikan jarak antar item dalam daftar */
-        }
-
-        strong {
-            font-size: 12pt;
-            /* Memperbesar teks bold */
-        }
-
-        .content {
-            width: 80%;
-            /* Atur lebar konten */
-            max-width: 1200px;
-            /* Lebar maksimum konten */
-            background-color: white;
-            /* Warna latar belakang konten */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Bayangan untuk efek kedalaman */
-            padding: 20px;
-            /* Ruang di dalam konten */
-            border-radius: 5px;
-            /* Sudut membulat */
-        }
+    .content {
+        width: 80%;
+        /* Atur lebar konten */
+        max-width: 1200px;
+        /* Lebar maksimum konten */
+        background-color: white;
+        /* Warna latar belakang konten */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        /* Bayangan untuk efek kedalaman */
+        padding: 20px;
+        /* Ruang di dalam konten */
+        border-radius: 5px;
+        /* Sudut membulat */
+    }
     </style>
 </head>
 
@@ -257,12 +258,14 @@ $periode = mysqli_fetch_array($periode_result)['periode'];
     $client_name = $client['name'];
 
     // Tentukan tabel yang akan digunakan berdasarkan nama client
-    if ($client_name == 'PT Asuransi Allianz Indonesia') {
+    if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
         $tabel = 'allianz';
-    } else if ($client_name == 'PT. MSIG Life Insurance') {
+    } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
         $tabel = 'msig';
-    } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+    } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
         $tabel = 'generali';
+    } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+        $tabel = 'bri';
     } else {
         die('client_name tidak ditemukan');
     }
@@ -692,12 +695,14 @@ ORDER BY `Date Month` ASC";
             $client_name = $client['name'];
 
             // Tentukan tabel yang akan digunakan berdasarkan nama client
-            if ($client_name == 'PT Asuransi Allianz Indonesia') {
+            if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                 $tabel = 'allianz';
-            } else if ($client_name == 'PT. MSIG Life Insurance') {
+            } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                 $tabel = 'msig';
-            } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+            } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                 $tabel = 'generali';
+            } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                $tabel = 'bri';
             } else {
                 die('client_name tidak ditemukan');
             }
@@ -807,12 +812,14 @@ ORDER BY `Date Month` ASC";
         <?php
         // Tentukan tabel berdasarkan nama client
         $client_name = $client['name'];
-        if ($client_name == 'PT Asuransi Allianz Indonesia') {
+        if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
             $tabel = 'allianz';
-        } elseif ($client_name == 'PT. MSIG Life Insurance') {
+        } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
             $tabel = 'msig';
-        } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+        } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
             $tabel = 'generali';
+        } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+            $tabel = 'bri';
         } else {
             die('client_name tidak ditemukan');
         }
@@ -867,94 +874,94 @@ ORDER BY `Date Month` ASC";
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
         <script type="text/javascript">
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'column', // Gunakan tipe 'column' agar grafik vertikal
-                    backgroundColor: '#D3D3D3'
-                },
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column', // Gunakan tipe 'column' agar grafik vertikal
+                backgroundColor: '#D3D3D3'
+            },
+            title: {
+                text: 'Jenis Klaim Yang Diinvestigasi (Cases)'
+            },
+            xAxis: {
+                categories: <?php echo json_encode($jenis_claim); ?>,
                 title: {
-                    text: 'Jenis Klaim Yang Diinvestigasi (Cases)'
+                    text: 'Claim Type'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Jumlah Kasus',
+                    align: 'high'
                 },
-                xAxis: {
-                    categories: <?php echo json_encode($jenis_claim); ?>,
-                    title: {
-                        text: 'Claim Type'
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Jumlah Kasus',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        dataLabels: {
-                            enabled: true,
-                            inside: true, // Menampilkan label di dalam batang, ubah ke false jika ingin di atas
-                            verticalAlign: 'middle', // Untuk menempatkan label di tengah batang
-                            style: {
-                                color: '#FFFFFF', // Ubah warna label ke putih agar kontras di dalam batang
-                                textOutline: '1px contrast' // Outline teks agar terlihat lebih jelas
-                            },
-                            format: '{point.y}' // Menampilkan jumlah kasus tanpa persentase
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        inside: true, // Menampilkan label di dalam batang, ubah ke false jika ingin di atas
+                        verticalAlign: 'middle', // Untuk menempatkan label di tengah batang
+                        style: {
+                            color: '#FFFFFF', // Ubah warna label ke putih agar kontras di dalam batang
+                            textOutline: '1px contrast' // Outline teks agar terlihat lebih jelas
                         },
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                legend: {
-                    reversed: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: 'Cases',
-                    data: <?php echo $chart_data_json; ?>
-                }]
-            });
+                        format: '{point.y}' // Menampilkan jumlah kasus tanpa persentase
+                    },
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            legend: {
+                reversed: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Cases',
+                data: <?php echo $chart_data_json; ?>
+            }]
+        });
         </script>
 
 
 
         <style>
-            table {
-                width: 60%;
-                border-collapse: collapse;
-                margin: 20px 0;
-            }
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
 
-            table,
-            th,
-            td {
-                border: 1px solid black;
-            }
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
 
-            th,
-            td {
-                padding: 8px 12px;
-                text-align: center;
-            }
+        th,
+        td {
+            padding: 8px 12px;
+            text-align: center;
+        }
 
-            th {
-                background-color: #2f4f6e;
-                color: white;
-            }
+        th {
+            background-color: #2f4f6e;
+            color: white;
+        }
 
-            td {
-                background-color: #f4f7fa;
-            }
+        td {
+            background-color: #f4f7fa;
+        }
 
-            tfoot td {
-                background-color: #2f4f6e;
-                color: white;
-                font-weight: bold;
-            }
+        tfoot td {
+            background-color: #2f4f6e;
+            color: white;
+            font-weight: bold;
+        }
         </style>
         </head>
 
@@ -971,12 +978,14 @@ ORDER BY `Date Month` ASC";
             <tbody>
                 <?php
                 $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                     $tabel = 'allianz';
-                } else if ($client_name == 'PT. MSIG Life Insurance') {
+                } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                     $tabel = 'msig';
-                } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                     $tabel = 'generali';
+                } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                    $tabel = 'bri';
                 } else {
                     die('client_name tidak ditemukan');
                 }
@@ -1060,12 +1069,14 @@ ORDER BY `Date Month` ASC";
 
             // Melakukan query
             $client_name = $client['name'];
-            if ($client_name == 'PT Asuransi Allianz Indonesia') {
+            if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                 $tabel = 'allianz';
-            } else if ($client_name == 'PT. MSIG Life Insurance') {
+            } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                 $tabel = 'msig';
-            } else if ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+            } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                 $tabel = 'generali';
+            } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                $tabel = 'bri';
             } else {
                 die('client_name tidak ditemukan');
             }
@@ -1202,88 +1213,90 @@ ORDER BY `Date Month` ASC";
 
                 <!-- Kode HTML dan JavaScript untuk Grafik -->
                 <script type="text/javascript">
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Chart 1: TAT Investigasi (Days)
-                        Highcharts.chart('tatChart', {
-                            chart: {
-                                type: 'column',
-                                backgroundColor: '#d3d3d3'
-                            },
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Chart 1: TAT Investigasi (Days)
+                    Highcharts.chart('tatChart', {
+                        chart: {
+                            type: 'column',
+                            backgroundColor: '#d3d3d3'
+                        },
+                        title: {
+                            text: 'TAT Investigasi (Days)'
+                        },
+                        xAxis: {
+                            categories: <?php echo $claimTypesJSON; ?>,
+                            crosshair: true
+                        },
+                        yAxis: [{
+                            min: 0,
                             title: {
-                                text: 'TAT Investigasi (Days)'
-                            },
-                            xAxis: {
-                                categories: <?php echo $claimTypesJSON; ?>,
-                                crosshair: true
-                            },
-                            yAxis: [{
-                                min: 0,
-                                title: {
-                                    text: 'Days'
+                                text: 'Days'
+                            }
+                        }],
+                        legend: {
+                            align: 'center',
+                            verticalAlign: 'top',
+                            y: 0
+                        },
+                        plotOptions: {
+                            column: {
+                                dataLabels: {
+                                    enabled: true,
+                                    inside: true, // Tampilkan di dalam batang
+                                    style: {
+                                        color: '#FFFFFF', // Warna putih untuk kontras
+                                        textOutline: '1px contrast'
+                                    }
                                 }
-                            }],
-                            legend: {
-                                align: 'center',
-                                verticalAlign: 'top',
-                                y: 0
                             },
-                            plotOptions: {
-                                column: {
-                                    dataLabels: {
-                                        enabled: true,
-                                        inside: true, // Tampilkan di dalam batang
-                                        style: {
-                                            color: '#FFFFFF', // Warna putih untuk kontras
-                                            textOutline: '1px contrast'
-                                        }
+                            line: {
+                                dataLabels: {
+                                    enabled: true,
+                                    align: 'center', // Posisi di tengah data point
+                                    verticalAlign: 'bottom', // Posisi label di atas garis
+                                    style: {
+                                        color: 'black', // Ubah warna untuk kontras
+                                        fontSize: '10px'
                                     }
                                 },
-                                line: {
-                                    dataLabels: {
-                                        enabled: true,
-                                        align: 'center', // Posisi di tengah data point
-                                        verticalAlign: 'bottom', // Posisi label di atas garis
-                                        style: {
-                                            color: 'black', // Ubah warna untuk kontras
-                                            fontSize: '10px'
-                                        }
-                                    },
-                                    enableMouseTracking: false // Nonaktifkan interaksi mouse untuk garis
-                                }
-                            },
-                            series: [{
-                                name: 'TAT Achievement (Days)',
-                                data: <?php echo $tatAchievementDataJSON; ?>,
-                                color: '#1f78b4'
-                            }, {
-                                name: 'TAT Average',
-                                type: 'line',
-                                data: <?php echo $tatAverageDataJSON; ?>,
-                                color: 'red',
-                                marker: {
-                                    enabled: false
-                                }
-                            }, {
-                                name: 'SLA',
-                                type: 'line',
-                                data: <?php echo json_encode(array_fill(0, count(json_decode($claimTypesJSON)), 14)); ?>,
-                                color: 'yellow',
-                                dashStyle: 'Dash',
-                                marker: {
-                                    enabled: false
-                                }
-                            }]
-                        });
+                                enableMouseTracking: false // Nonaktifkan interaksi mouse untuk garis
+                            }
+                        },
+                        series: [{
+                            name: 'TAT Achievement (Days)',
+                            data: <?php echo $tatAchievementDataJSON; ?>,
+                            color: '#1f78b4'
+                        }, {
+                            name: 'TAT Average',
+                            type: 'line',
+                            data: <?php echo $tatAverageDataJSON; ?>,
+                            color: 'red',
+                            marker: {
+                                enabled: false
+                            }
+                        }, {
+                            name: 'SLA',
+                            type: 'line',
+                            data: <?php echo json_encode(array_fill(0, count(json_decode($claimTypesJSON)), 14)); ?>,
+                            color: 'yellow',
+                            dashStyle: 'Dash',
+                            marker: {
+                                enabled: false
+                            }
+                        }]
+                    });
 
-                        <?php
+                    <?php
                         // Tentukan tabel berdasarkan client name
                         $client_name = $client['name'];
-                        if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                        if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                             $tabel = 'allianz';
-                        } elseif ($client_name == 'PT. MSIG Life Insurance') {
+                        } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                             $tabel = 'msig';
-                        } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                        } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                             $tabel = 'generali';
+                        } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                            $tabel = 'bri';
                         } else {
                             die('client_name tidak ditemukan');
                         }
@@ -1338,64 +1351,64 @@ ORDER BY `Date Month` ASC";
                         ?>
 
 
-                        // Chart 2: SLA Investigasi (Policy Level)
-                        Highcharts.chart('slaChart', {
-                            chart: {
-                                type: 'column'
-                            },
+                    // Chart 2: SLA Investigasi (Policy Level)
+                    Highcharts.chart('slaChart', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'SLA Investigasi (Policy Level)'
+                        },
+                        xAxis: {
+                            categories: <?php echo $categoriesJSON; ?>,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
                             title: {
-                                text: 'SLA Investigasi (Policy Level)'
-                            },
-                            xAxis: {
-                                categories: <?php echo $categoriesJSON; ?>,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Cases'
+                                text: 'Cases'
+                            }
+                        },
+                        plotOptions: {
+                            column: {
+                                dataLabels: {
+                                    enabled: true,
+                                    inside: true, // Tampilkan di dalam batang
+                                    style: {
+                                        color: '#FFFFFF', // Warna putih untuk kontras
+                                        textOutline: '1px contrast'
+                                    }
                                 }
                             },
-                            plotOptions: {
-                                column: {
-                                    dataLabels: {
-                                        enabled: true,
-                                        inside: true, // Tampilkan di dalam batang
-                                        style: {
-                                            color: '#FFFFFF', // Warna putih untuk kontras
-                                            textOutline: '1px contrast'
-                                        }
+                            line: {
+                                dataLabels: {
+                                    enabled: true,
+                                    align: 'center', // Posisi di tengah data point
+                                    verticalAlign: 'bottom', // Posisi label di atas garis
+                                    style: {
+                                        color: 'black', // Ubah warna untuk kontras
+                                        fontSize: '10px'
                                     }
                                 },
-                                line: {
-                                    dataLabels: {
-                                        enabled: true,
-                                        align: 'center', // Posisi di tengah data point
-                                        verticalAlign: 'bottom', // Posisi label di atas garis
-                                        style: {
-                                            color: 'black', // Ubah warna untuk kontras
-                                            fontSize: '10px'
-                                        }
-                                    },
-                                    enableMouseTracking: false // Nonaktifkan interaksi mouse untuk garis
-                                }
-                            },
-                            series: [{
-                                name: 'Cases',
-                                data: <?php echo $dataChartJSON; ?>,
-                                color: '#1f78b4'
-                            }, {
-                                name: 'SLA Average',
-                                type: 'line',
-                                data: <?php echo $averageSLADataJSON; ?>,
-                                color: 'red',
-                                dashStyle: 'Dash',
-                                marker: {
-                                    enabled: true
-                                }
-                            }]
-                        });
+                                enableMouseTracking: false // Nonaktifkan interaksi mouse untuk garis
+                            }
+                        },
+                        series: [{
+                            name: 'Cases',
+                            data: <?php echo $dataChartJSON; ?>,
+                            color: '#1f78b4'
+                        }, {
+                            name: 'SLA Average',
+                            type: 'line',
+                            data: <?php echo $averageSLADataJSON; ?>,
+                            color: 'red',
+                            dashStyle: 'Dash',
+                            marker: {
+                                enabled: true
+                            }
+                        }]
                     });
+                });
                 </script>
 
 
@@ -1470,12 +1483,14 @@ ORDER BY `Date Month` ASC";
                 <?php
                 // Tentukan tabel berdasarkan client name
                 $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                     $tabel = 'allianz';
-                } elseif ($client_name == 'PT. MSIG Life Insurance') {
+                } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                     $tabel = 'msig';
-                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                     $tabel = 'generali';
+                } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                    $tabel = 'bri';
                 } else {
                     die('client_name tidak ditemukan');
                 }
@@ -1529,27 +1544,27 @@ ORDER BY `Date Month` ASC";
                 </ol>
                 <ul>
                     <?php foreach ($tat_data as $date_month => $claim_types) : ?>
-                        <?php
+                    <?php
                         // Check if there's any non-null value in $claim_types
                         if (array_filter($claim_types)) :
                         ?>
-                            <li><?php echo $date_month; ?>:</li>
-                            <ul>
-                                <?php if ($claim_types['CI'] !== null) : ?>
-                                    <li>Klaim critical illness (CI) selama <?php echo $claim_types['CI']; ?> hari kalender.
-                                    </li>
-                                <?php endif; ?>
-                                <?php if ($claim_types['DC'] !== null) : ?>
-                                    <li>Klaim meninggal (DC) selama <?php echo $claim_types['DC']; ?> hari kalender.</li>
-                                <?php endif; ?>
-                                <?php if ($claim_types['HS'] !== null) : ?>
-                                    <li>Klaim HS (Hospital) selama <?php echo $claim_types['HS']; ?> hari kalender.</li>
-                                <?php endif; ?>
-                                <?php if ($claim_types['TPD'] !== null) : ?>
-                                    <li>Klaim TPD selama <?php echo $claim_types['TPD']; ?> hari kalender.</li>
-                                <?php endif; ?>
-                            </ul>
+                    <li><?php echo $date_month; ?>:</li>
+                    <ul>
+                        <?php if ($claim_types['CI'] !== null) : ?>
+                        <li>Klaim critical illness (CI) selama <?php echo $claim_types['CI']; ?> hari kalender.
+                        </li>
                         <?php endif; ?>
+                        <?php if ($claim_types['DC'] !== null) : ?>
+                        <li>Klaim meninggal (DC) selama <?php echo $claim_types['DC']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                        <?php if ($claim_types['HS'] !== null) : ?>
+                        <li>Klaim HS (Hospital) selama <?php echo $claim_types['HS']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                        <?php if ($claim_types['TPD'] !== null) : ?>
+                        <li>Klaim TPD selama <?php echo $claim_types['TPD']; ?> hari kalender.</li>
+                        <?php endif; ?>
+                    </ul>
+                    <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -1587,12 +1602,14 @@ ORDER BY `Date Month` ASC";
 
                 // Tentukan tabel berdasarkan nama client
                 $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                     $tabel = 'allianz';
-                } elseif ($client_name == 'PT. MSIG Life Insurance') {
+                } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                     $tabel = 'msig';
-                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                     $tabel = 'generali';
+                } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                    $tabel = 'bri';
                 } else {
                     die('client_name tidak ditemukan');
                 }
@@ -1643,59 +1660,59 @@ ORDER BY `Date Month` ASC";
 
 
                 <script>
-                    Highcharts.chart('chart2', {
-                        chart: {
-                            type: 'column'
-                        },
+                Highcharts.chart('chart2', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Hasil Investigasi'
+                    },
+                    xAxis: {
+                        categories: <?php echo json_encode($categories); ?> // Data dari PHP
+                    },
+                    yAxis: [{
+                        min: 0,
                         title: {
-                            text: 'Hasil Investigasi'
+                            text: 'Cases'
+                        }
+                    }, {
+                        title: {
+                            text: '% Cases'
                         },
-                        xAxis: {
-                            categories: <?php echo json_encode($categories); ?> // Data dari PHP
-                        },
-                        yAxis: [{
-                            min: 0,
-                            title: {
-                                text: 'Cases'
-                            }
-                        }, {
-                            title: {
-                                text: '% Cases'
-                            },
-                            opposite: true
-                        }],
-                        plotOptions: {
-                            column: {
-                                dataLabels: {
-                                    enabled: true,
-                                    formatter: function() {
-                                        return this.y;
-                                    }
-                                }
-                            },
-                            spline: {
-                                dataLabels: {
-                                    enabled: true,
-                                    formatter: function() {
-                                        return this.y + '%';
-                                    }
+                        opposite: true
+                    }],
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function() {
+                                    return this.y;
                                 }
                             }
                         },
-                        series: [{
-                            name: 'Cases',
-                            type: 'column',
-                            data: <?php echo json_encode($data_cases); ?> // Data dari PHP
-                        }, {
-                            name: '% Cases',
-                            type: 'spline',
-                            yAxis: 1,
-                            data: <?php echo json_encode($data_percent); ?>, // Data persentase dari PHP
-                            tooltip: {
-                                valueSuffix: '%'
+                        spline: {
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function() {
+                                    return this.y + '%';
+                                }
                             }
-                        }]
-                    });
+                        }
+                    },
+                    series: [{
+                        name: 'Cases',
+                        type: 'column',
+                        data: <?php echo json_encode($data_cases); ?> // Data dari PHP
+                    }, {
+                        name: '% Cases',
+                        type: 'spline',
+                        yAxis: 1,
+                        data: <?php echo json_encode($data_percent); ?>, // Data persentase dari PHP
+                        tooltip: {
+                            valueSuffix: '%'
+                        }
+                    }]
+                });
                 </script>
                 <p><strong><u>Temuan Investigasi </u></strong></p>
                 <p><strong>Analisa:</strong></p>
@@ -1705,12 +1722,14 @@ ORDER BY `Date Month` ASC";
 
                 // Tentukan tabel berdasarkan nama client
                 $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                     $tabel = 'allianz';
-                } elseif ($client_name == 'PT. MSIG Life Insurance') {
+                } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                     $tabel = 'msig';
-                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                     $tabel = 'generali';
+                } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                    $tabel = 'bri';
                 } else {
                     die('client_name tidak ditemukan');
                 }
@@ -1808,12 +1827,14 @@ ORDER BY `Date Month` ASC";
 
         // Tentukan tabel berdasarkan nama client
         $client_name = $client['name'];
-        if ($client_name == 'PT Asuransi Allianz Indonesia') {
+        if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
             $tabel = 'allianz';
-        } elseif ($client_name == 'PT. MSIG Life Insurance') {
+        } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
             $tabel = 'msig';
-        } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+        } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
             $tabel = 'generali';
+        } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+            $tabel = 'bri';
         } else {
             die('client_name tidak ditemukan');
         }
@@ -1904,41 +1925,41 @@ ORDER BY `Date Month` ASC";
 
         <!-- Bagian JavaScript untuk Highcharts -->
         <script>
-            Highcharts.chart('chart1', {
-                chart: {
-                    type: 'column'
-                },
+        Highcharts.chart('chart1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Sebaran Area dengan Temuan per Kategori'
+            },
+            xAxis: {
+                categories: <?php echo json_encode($provinsi); ?>, // Kategori provinsi dari PHP
+            },
+            yAxis: {
+                min: 0,
                 title: {
-                    text: 'Sebaran Area dengan Temuan per Kategori'
-                },
-                xAxis: {
-                    categories: <?php echo json_encode($provinsi); ?>, // Kategori provinsi dari PHP
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Number of Cases'
-                    }
-                },
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'top'
-                },
-                plotOptions: {
-                    series: {
-                        grouping: true, // Memisahkan setiap temuan
-                        dataLabels: {
-                            enabled: true,
-                            formatter: function() {
-                                return this.y > 0 ? this.y :
-                                    null; // Hanya tampilkan jika nilainya lebih besar dari 0
-                            }
+                    text: 'Number of Cases'
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'top'
+            },
+            plotOptions: {
+                series: {
+                    grouping: true, // Memisahkan setiap temuan
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return this.y > 0 ? this.y :
+                                null; // Hanya tampilkan jika nilainya lebih besar dari 0
                         }
                     }
-                },
-                series: [
-                    <?php
+                }
+            },
+            series: [
+                <?php
                     // Menghasilkan series data secara dinamis
                     foreach ($categories as $category) {
                         echo "{
@@ -1950,17 +1971,17 @@ ORDER BY `Date Month` ASC";
                 },";
                     }
                     ?> {
-                        name: 'Total',
-                        type: 'line',
-                        color: '#000000', // Warna hitam untuk total
-                        data: <?php echo json_encode($total_cases); ?>, // Data total kasus
-                        marker: {
-                            enabled: true,
-                            radius: 3
-                        }
+                    name: 'Total',
+                    type: 'line',
+                    color: '#000000', // Warna hitam untuk total
+                    data: <?php echo json_encode($total_cases); ?>, // Data total kasus
+                    marker: {
+                        enabled: true,
+                        radius: 3
                     }
-                ]
-            });
+                }
+            ]
+        });
         </script>
 
 
@@ -2045,38 +2066,38 @@ ORDER BY `Date Month` ASC";
         <p><strong>Total uang pertanggungan untuk seluruh kasus Investigasi</strong></p>
         <p>&nbsp;</p>
         <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
 
-            table,
-            th,
-            td {
-                border: 1px solid black;
-            }
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
 
-            th,
-            td {
-                padding: 8px 12px;
-                text-align: center;
-            }
+        th,
+        td {
+            padding: 8px 12px;
+            text-align: center;
+        }
 
-            th {
-                background-color: #2f4f6e;
-                color: white;
-            }
+        th {
+            background-color: #2f4f6e;
+            color: white;
+        }
 
-            td {
-                background-color: #f4f7fa;
-            }
+        td {
+            background-color: #f4f7fa;
+        }
 
-            tfoot td {
-                background-color: #2f4f6e;
-                color: white;
-                font-weight: bold;
-            }
+        tfoot td {
+            background-color: #2f4f6e;
+            color: white;
+            font-weight: bold;
+        }
         </style>
         </head>
 
@@ -2099,12 +2120,14 @@ ORDER BY `Date Month` ASC";
 
                 // Tentukan tabel berdasarkan nama client
                 $client_name = $client['name'];
-                if ($client_name == 'PT Asuransi Allianz Indonesia') {
+                if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                     $tabel = 'allianz';
-                } elseif ($client_name == 'PT. MSIG Life Insurance') {
+                } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                     $tabel = 'msig';
-                } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+                } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                     $tabel = 'generali';
+                } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                    $tabel = 'bri';
                 } else {
                     die('client_name tidak ditemukan');
                 }
@@ -2211,12 +2234,14 @@ ORDER BY `Date Month` ASC";
 
             // Tentukan tabel berdasarkan nama client
             $client_name = $client['name'];
-            if ($client_name == 'PT Asuransi Allianz Indonesia') {
+            if ($client_name == 'PT. ASURANSI ALLIANZ LIFE INDONESIA') {
                 $tabel = 'allianz';
-            } elseif ($client_name == 'PT. MSIG Life Insurance') {
+            } else if ($client_name == 'PT. MSIG LIFE INSURANCE INDONESIA Tbk') {
                 $tabel = 'msig';
-            } elseif ($client_name == 'PT. Asuransi Jiwa Generali Indonesia') {
+            } else if ($client_name == 'PT. ASURANSI JIWA GENERALI INDONESIA') {
                 $tabel = 'generali';
+            } else if ($client_name == 'PT. ASURANSI BRI LIFE') {
+                $tabel = 'bri';
             } else {
                 die('client_name tidak ditemukan');
             }
